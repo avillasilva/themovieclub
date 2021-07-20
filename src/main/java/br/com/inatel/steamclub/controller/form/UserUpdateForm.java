@@ -1,15 +1,16 @@
 package br.com.inatel.steamclub.controller.form;
 
-import br.com.inatel.steamclub.model.User;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-public class UserForm {
-    
-    @NotNull @NotEmpty @Length(min=5)
+import br.com.inatel.steamclub.model.User;
+import br.com.inatel.steamclub.repository.UserRepository;
+
+public class UserUpdateForm {
+	
+	@NotNull @NotEmpty @Length(min=5)
     private String name;
 
     @NotNull @NotEmpty
@@ -36,12 +37,16 @@ public class UserForm {
     public String getPasswordConfirmation() {
     	return passwordConfirmation;
     }
-
-    public User toUser() {
-    	if (password.equals(passwordConfirmation)) {
-            return new User(name, email, password);
+    
+    public User update(Long id, UserRepository userRepository) {
+    	if (!password.equals(passwordConfirmation)) {
+            return null;
         }
-
-        return null;
+    	
+    	User user = userRepository.getById(id);
+    	user.setName(name);
+    	user.setEmail(email);
+    	user.setPassword(password);
+    	return user;
     }
 }
