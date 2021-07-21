@@ -4,6 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.com.inatel.steamclub.model.Comment;
+import br.com.inatel.steamclub.repository.CommentRepository;
 
 public class CommentForm {
     
@@ -32,4 +33,10 @@ public class CommentForm {
     public Comment toComment() {
         return new Comment(author, content);
     }
+
+	public Comment update(Long id, CommentRepository commentRepository) {
+		Comment comment = commentRepository.getById(id);
+		comment.setContent(content);
+		return comment;
+	}
 }

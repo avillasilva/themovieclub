@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,7 +55,27 @@ public class CommentController {
         return ResponseEntity.created(uri).body(new CommentDto(comment));
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     @Transactional
-    public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody CommentUpdateForm form)
+    public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody @Valid CommentForm form) {
+    	Optional<Comment> optional = commentRepository.findById(id);
+    	if (optional.isPresent()) {
+			Comment comment = form.update(id, commentRepository);
+			return ResponseEntity.ok(new CommentDto(comment));
+		}
+    	return ResponseEntity.notFound().build();
+    }
+    
+    
+    @DeleteMapping("{id}")
+    @Transactional
+    public ResponseEntity<CommentDto> delete(@PathVariable Long id) {
+    	Optional<Comment> optional = commentRepository.findById(id);
+    	if (optional.isPresent()) {
+			commentRepository.delete(optional.get());
+			return ResponseEntity.ok().build();
+		}
+    	
+    	return ResponseEntity.notFound().build();
+    }
 }
