@@ -7,7 +7,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import br.com.inatel.steamclub.model.User;
+import br.com.inatel.steamclub.repository.UserRepository;
 
 // External API Communication:
 //  - Steam
@@ -27,9 +32,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class AuthenticationByTokenFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;
+    private UserRepository userRepository;
 
-    public AuthenticationByTokenFilter(TokenService tokenService) {
+    public AuthenticationByTokenFilter(TokenService tokenService, UserRepository userRepository) {
         this.tokenService = tokenService;
+        this.userRepository = userRepository;
     }
     
     @Override
@@ -37,9 +44,11 @@ public class AuthenticationByTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         
         String token = collectToken(request);
-        boolean valid = tokenService.isValid(token);
-        System.out.println(valid);
-                
+        
+        if (tokenService.isValid(token)) {
+        	authenticateClient(token);
+        }
+        
         filterChain.doFilter(request, response);
     }
 
@@ -51,5 +60,12 @@ public class AuthenticationByTokenFilter extends OncePerRequestFilter {
         }
 
         return token.substring(7, token.length());
+    }
+    
+    public void authenticateClient(String token) {
+    	Long userId = tokenService.getUserId(token);
+    	User user = userRepository.findById(userId).get();
+    	UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+    	SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

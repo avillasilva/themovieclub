@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,7 +17,7 @@ public class Post {
 	private Long id;
 	private String title;
 	private String content;
-	private String authorName;
+	private String author;
 	
 //	@ManyToOne
 //	private User author;
@@ -32,7 +31,7 @@ public class Post {
 
 	public Post(String title, String authorName, String content, boolean isPublic) {
 		this.title = title;
-		this.authorName = authorName;
+		this.author = authorName;
 		this.content = content;
 		this.comments = new ArrayList<>();
 		this.isPublic = isPublic;
@@ -51,7 +50,7 @@ public class Post {
 	}
 
 	public String getAuthor() {
-		return authorName;
+		return author;
 	}
 
 	public String getContent() {
