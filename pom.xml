@@ -11,7 +11,7 @@
 	<groupId>com.inatel</groupId>
 	<artifactId>themovieclub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>steamclub</name>
+	<name>themovieclub</name>
 	<description>Social network about video games using the Steam Web API</description>
 	
 	<properties>
