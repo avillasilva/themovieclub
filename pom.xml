@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.inatel</groupId>
-	<artifactId>steamclub</artifactId>
+	<artifactId>themovieclub</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>steamclub</name>
 	<description>Social network about video games using the Steam Web API</description>
