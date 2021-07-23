@@ -14,21 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.UserRepository;
 
-// External API Communication:
-//  - Steam
-
-// Relational Database Integration:
-//  - Postgresql
-
-// Automated tests:
-// - mockito
-// - cucumber
-
-// logging
-// No relational Database Integration (use to store the logging)
-// cache
-// authentication and authorization
-
 public class AuthenticationByTokenFilter extends OncePerRequestFilter {
 
     private TokenService tokenService;

@@ -24,6 +24,7 @@ import br.com.inatel.themovieclub.controller.form.PostForm;
 import br.com.inatel.themovieclub.controller.form.PostUpdateForm;
 import br.com.inatel.themovieclub.model.Post;
 import br.com.inatel.themovieclub.repository.PostRepository;
+import br.com.inatel.themovieclub.service.ApiService;
 
 @RestController
 @RequestMapping("/posts")
@@ -34,6 +35,9 @@ public class PostController {
 	
 	@GetMapping
 	public List<Post> list() {
+		
+		System.out.println(ApiService.searchMovieByTitle("pirates"));
+		
 		List<Post> posts = postRepository.findAll();
 		return posts;
 	}

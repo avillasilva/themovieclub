@@ -46,11 +46,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.GET, "/posts").permitAll()
         .antMatchers(HttpMethod.GET, "/posts/*").permitAll()
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
-        
+        .antMatchers("/h2-console/**").permitAll()
         .anyRequest().authenticated()
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().addFilterBefore(new AuthenticationByTokenFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
+        
+        http.headers().frameOptions().disable();
     }
 
     @Override

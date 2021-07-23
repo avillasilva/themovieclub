@@ -14,10 +14,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class TokenService {
 
-    @Value("${steamclub.jwt.expiration}")
+    @Value("${themovieclub.jwt.expiration}")
     private String expiration;
     
-    @Value("${steamclub.jwt.secret}")
+    @Value("${themovieclub.jwt.secret}")
     private String secret;
     
     public String generateToken(Authentication auth) {
