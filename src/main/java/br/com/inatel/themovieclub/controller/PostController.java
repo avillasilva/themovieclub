@@ -7,6 +7,12 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +30,6 @@ import br.com.inatel.themovieclub.controller.form.PostForm;
 import br.com.inatel.themovieclub.controller.form.PostUpdateForm;
 import br.com.inatel.themovieclub.model.Post;
 import br.com.inatel.themovieclub.repository.PostRepository;
-import br.com.inatel.themovieclub.service.ApiService;
 
 @RestController
 @RequestMapping("/posts")
@@ -34,9 +39,9 @@ public class PostController {
 	private PostRepository postRepository;
 	
 	@GetMapping
-	public List<Post> list() {
-		List<Post> posts = postRepository.findAll();
-		return posts;
+	@Cacheable(value = "postList")
+	public Page<Post> list(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
+		return postRepository.findAll(pageable);
 	}
 	
 	@GetMapping("/{id}")
@@ -51,6 +56,7 @@ public class PostController {
 	
 	@PostMapping
 	@Transactional
+	@CacheEvict(value = "postList", allEntries = true)
 	public ResponseEntity<PostDto> create(@RequestBody @Valid PostForm form, UriComponentsBuilder uriBuilder) {
 		Post post = form.toPost();
 		postRepository.save(post);
@@ -61,6 +67,7 @@ public class PostController {
 	
 	@PutMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = "postList", allEntries = true)
 	public ResponseEntity<PostDto> update(@PathVariable Long id, @RequestBody @Valid PostUpdateForm form) {
 		Optional<Post> postOptional = postRepository.findById(id);
     	if (postOptional.isPresent()) {
@@ -73,6 +80,7 @@ public class PostController {
 	
 	@DeleteMapping("/{id}")
     @Transactional
+	@CacheEvict(value = "postList", allEntries = true)
     public ResponseEntity<PostDto> delete(@PathVariable Long id){
     	Optional<Post> postOptional = postRepository.findById(id);
     	if (postOptional.isPresent()) {
