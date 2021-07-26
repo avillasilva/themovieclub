@@ -1,19 +1,19 @@
 package br.com.inatel.themovieclub.controller.dto;
 
-import br.com.inatel.themovieclub.model.Post;
+import br.com.inatel.themovieclub.model.Review;
 
-public class PostDto {
+public class ReviewDto {
 	
 	private Long id;
 	private String title;
 	private String authorName;
 	private String content;
 	
-	public PostDto(Post post) {
-		this.id = post.getId();
-		this.title = post.getTitle();
-		this.authorName = post.getAuthor();
-		this.content = post.getContent();
+	public ReviewDto(Review review) {
+		this.id = review.getId();
+		this.title = review.getTitle();
+		this.authorName = review.getAuthor().getName();
+		this.content = review.getContent();
 	}
 
 	public Long getId() {

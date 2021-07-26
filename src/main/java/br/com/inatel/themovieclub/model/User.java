@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,15 +25,21 @@ public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
 	private String password;
 	private LocalDateTime cratedAt = LocalDateTime.now();
 	
-	@OneToMany
-	private List<Post> posts;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<User> friends;
+	
+	@OneToOne
+	private MovieList watchedMovies;
+	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	private List<Review> reviews;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Profile> profiles = new ArrayList<>();
@@ -45,7 +54,7 @@ public class User implements UserDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cratedAt, email, id, name, password, posts);
+		return Objects.hash(cratedAt, email, id, name, password, reviews);
 	}
 
 	@Override
@@ -59,7 +68,7 @@ public class User implements UserDetails {
 		User other = (User) obj;
 		return Objects.equals(cratedAt, other.cratedAt) && Objects.equals(email, other.email)
 				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(posts, other.posts);
+				&& Objects.equals(password, other.password) && Objects.equals(reviews, other.reviews);
 	}
 
 	public Long getId() {
@@ -92,6 +101,18 @@ public class User implements UserDetails {
 
 	public LocalDateTime getCratedAt() {
 		return cratedAt;
+	}
+
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void addFriend(User user) {
+		friends.add(user);
+	}
+
+	public void unfriend(User user) {
+		friends.remove(user);
 	}
 
 	@Override

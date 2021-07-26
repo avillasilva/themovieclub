@@ -3,35 +3,36 @@ package br.com.inatel.themovieclub.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Post {
+public class Review {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User author;
+	
+	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+	private List<Comment> comments;
+
 	private String title;
 	private String content;
-	private String author;
-	
-//	@ManyToOne
-//	private User author;
-	
-	@OneToMany
-	private List<Comment> comments;
-	
 	private boolean isPublic;
 	
-	public Post() {}
+	public Review() {}
 
-	public Post(String title, String authorName, String content, boolean isPublic) {
+	public Review(String title, User author, String content, boolean isPublic) {
 		this.title = title;
-		this.author = authorName;
+		this.author = author;
 		this.content = content;
 		this.comments = new ArrayList<>();
 		this.isPublic = isPublic;
@@ -49,7 +50,7 @@ public class Post {
 		this.title = title;
 	}
 
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 

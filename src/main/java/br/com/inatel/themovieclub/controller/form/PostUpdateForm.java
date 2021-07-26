@@ -5,8 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.inatel.themovieclub.model.Post;
-import br.com.inatel.themovieclub.repository.PostRepository;
+import br.com.inatel.themovieclub.model.Review;
+import br.com.inatel.themovieclub.repository.ReviewRepository;
 
 public class PostUpdateForm {
 
@@ -54,8 +54,8 @@ public class PostUpdateForm {
 		this.isPublic = isPublic;
 	}
 	
-	public Post update(Long id, PostRepository postRepository) {
-		Post post = postRepository.getById(id);
+	public Review update(Long id, ReviewRepository postRepository) {
+		Review post = postRepository.getById(id);
 		post.setTitle(title);
 		post.setContent(content);
 		post.setPublic(isPublic);

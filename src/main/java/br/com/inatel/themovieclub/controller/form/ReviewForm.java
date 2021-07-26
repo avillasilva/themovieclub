@@ -5,15 +5,17 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
-import br.com.inatel.themovieclub.model.Post;
+import br.com.inatel.themovieclub.model.Review;
+import br.com.inatel.themovieclub.model.User;
+import br.com.inatel.themovieclub.repository.UserRepository;
 
-public class PostForm {
+public class ReviewForm {
     
 	@NotNull @NotEmpty @Length(min=5)
     private String title;
 
     @NotNull @NotEmpty
-    private String authorName;
+    private Long userId;
 
     @NotNull @NotEmpty
     private String content;
@@ -25,8 +27,8 @@ public class PostForm {
 		return title;
 	}
 
-	public String getAuthorName() {
-		return authorName;
+	public Long getUserId() {
+		return userId;
 	}
 
 	public String getContent() {
@@ -37,8 +39,8 @@ public class PostForm {
 		this.title = title;
 	}
 
-	public void setAuthorName(String authorName) {
-		this.authorName = authorName;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public void setContent(String content) {
@@ -53,7 +55,8 @@ public class PostForm {
 		this.isPublic = isPublic;
 	}
 
-	public Post toPost() {
-		return new Post(title, authorName, content, isPublic);
+	public Review toReview(UserRepository userRepository) {
+		User user = userRepository.getById(userId);		
+		return new Review(title, user, content, isPublic);
 	}
 }
