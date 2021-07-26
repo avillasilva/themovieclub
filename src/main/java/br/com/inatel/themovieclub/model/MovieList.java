@@ -3,27 +3,43 @@ package br.com.inatel.themovieclub.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class MovieList {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    @ManyToMany
+    
+    @OneToMany(mappedBy = "movieList", cascade = CascadeType.ALL)
     private List<Movie> movies = new ArrayList<>();
+
+    @ManyToOne
+    private User owner;
+   
+    private String name;
 
     public MovieList() {}
 
     public MovieList(String name) {
         this.name = name;
     }
+    
+    public Long getId() {
+		return id;
+	}
  
+    public void setId(Long id) {
+		this.id = id;
+	}
+    
     public String getName() {
         return name;
     }
@@ -40,7 +56,11 @@ public class MovieList {
         movies.add(movie);
     }
     
-    public void removeMovie(Movie movie) {
-        movies.remove(movie);
+    public void removeMovie(Long id) {
+    	for (Movie movie : movies) {
+    		if (movie.getId() == id) {
+    			movies.remove(movie);
+    		}
+    	}
     }
 }

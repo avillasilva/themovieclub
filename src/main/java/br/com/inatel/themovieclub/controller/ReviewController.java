@@ -25,25 +25,28 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.inatel.themovieclub.controller.dto.ReviewDto;
-import br.com.inatel.themovieclub.controller.form.ReviewForm;
 import br.com.inatel.themovieclub.controller.form.PostUpdateForm;
+import br.com.inatel.themovieclub.controller.form.ReviewForm;
 import br.com.inatel.themovieclub.model.Review;
 import br.com.inatel.themovieclub.repository.ReviewRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/reviews")
 public class ReviewController {
 	
 	@Autowired
 	private ReviewRepository reviewRepository;
+	
 	@Autowired
 	private UserRepository userRepository;
 	
 	@GetMapping
 	@Cacheable(value = "reviewList")
-	public Page<Review> list(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
-		return reviewRepository.findAll(pageable);
+	public Page<ReviewDto> list(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
+		Page<Review> reviews = reviewRepository.findAll(pageable); 
+		
+		return ReviewDto.toReviewDto(reviews); 
 	}
 	
 	@GetMapping("/{id}")
@@ -63,14 +66,14 @@ public class ReviewController {
 		Review review = form.toReview(userRepository);
 		reviewRepository.save(review);
 		
-		URI uri = uriBuilder.path("/posts/{id}").buildAndExpand(review.getId()).toUri();
+		URI uri = uriBuilder.path("/reviews/{id}").buildAndExpand(review.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ReviewDto(review));
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
 	@CacheEvict(value = "reviewList", allEntries = true)
-	public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody @Valid PostUpdateForm form) {
+	public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody @Valid ReviewForm form) {
 		Optional<Review> reviewOptional = reviewRepository.findById(id);
     	if (reviewOptional.isPresent()) {
 			Review review = form.update(id, reviewRepository);

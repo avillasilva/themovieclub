@@ -1,12 +1,14 @@
 package br.com.inatel.themovieclub.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Movie {
@@ -14,8 +16,11 @@ public class Movie {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToMany
-    private Set<Genre> genres;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MovieList movieList;
+ 
+    @OneToMany
+    private List<Genre> genres;
     
     private String title;
     private String overview;
@@ -26,7 +31,7 @@ public class Movie {
     public Movie(Long id, String title, String overview) {
         this.id = id;
         this.title = title;
-        this.overview = overview;        
+        this.overview = overview;  
     }
 
     public Long getId() {

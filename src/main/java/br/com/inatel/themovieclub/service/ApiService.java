@@ -1,18 +1,18 @@
 package br.com.inatel.themovieclub.service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 //Incorporate the api key into properties
 
-@Component
+@Service
 public class ApiService {
 	
-	@Value("${api.key}")
-	private static String apiKey;
+//	@Value("${api.key}")
+//	private static String apiKey;
 	
-	public static MovieList searchMovieByTitle(String query) {
+	public MovieList searchMovieByTitle(String query) {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		MovieList movieList = restTemplate.getForObject(
@@ -21,7 +21,7 @@ public class ApiService {
 		return movieList;
 	}
 	
-	public static MovieDetails getMovieDetails(Long id) {
+	public MovieDetails getMovieDetails(Long id) {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		MovieDetails movieDetails = restTemplate.getForObject(

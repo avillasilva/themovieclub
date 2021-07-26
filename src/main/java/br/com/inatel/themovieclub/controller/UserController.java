@@ -84,37 +84,37 @@ public class UserController {
     	return ResponseEntity.notFound().build();
     }
 
-	@GetMapping("/friends")
-	public List<UserDto> getFriends(Authentication auth) {
-		User user = (User) auth.getPrincipal();
-		return UserDto.toUserDto(user.getFriends());
-	}
-
-	@PostMapping("/friends/{friendId}")
-	@Transactional
-	public ResponseEntity<UserDto> addFriend(Authentication auth, @PathVariable Long friendId) {
-		User user = (User) auth.getPrincipal();
-		Optional<User> optional = userRepository.findById(friendId);
-		if (optional.isPresent()) {
-			user.addFriend(optional.get());
-			// optional.get().addFriend(user);	
-			return ResponseEntity.ok().build();
-		}
-
-		return ResponseEntity.notFound().build();
-	}
-
-	@DeleteMapping("/friends/{friendId}")
-	@Transactional
-	public ResponseEntity<UserDto> unfriend(Authentication auth, @PathVariable Long friendId) {
-		User user = (User) auth.getPrincipal();
-		Optional<User> optional = userRepository.findById(friendId);
-		if (optional.isPresent()) {
-			user.unfriend(optional.get());
-			optional.get().unfriend(user);
-			return ResponseEntity.ok().build();
-		}
-
-		return ResponseEntity.notFound().build();
-	}
+//	@GetMapping("/friends")
+//	public List<UserDto> getFriends(Authentication auth) {
+//		User user = (User) auth.getPrincipal();
+//		return UserDto.toUserDto(user.getFriends());
+//	}
+//
+//	@PostMapping("/friends/{friendId}")
+//	@Transactional
+//	public ResponseEntity<UserDto> addFriend(Authentication auth, @PathVariable Long friendId) {
+//		User user = (User) auth.getPrincipal();
+//		Optional<User> optional = userRepository.findById(friendId);
+//		if (optional.isPresent()) {
+//			user.addFriend(optional.get());
+//			// optional.get().addFriend(user);	
+//			return ResponseEntity.ok().build();
+//		}
+//
+//		return ResponseEntity.notFound().build();
+//	}
+//
+//	@DeleteMapping("/friends/{friendId}")
+//	@Transactional
+//	public ResponseEntity<UserDto> unfriend(Authentication auth, @PathVariable Long friendId) {
+//		User user = (User) auth.getPrincipal();
+//		Optional<User> optional = userRepository.findById(friendId);
+//		if (optional.isPresent()) {
+//			user.unfriend(optional.get());
+//			optional.get().unfriend(user);
+//			return ResponseEntity.ok().build();
+//		}
+//
+//		return ResponseEntity.notFound().build();
+//	}
 }

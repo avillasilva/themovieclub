@@ -7,6 +7,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +27,8 @@ import br.com.inatel.themovieclub.controller.dto.CommentDto;
 import br.com.inatel.themovieclub.controller.form.CommentForm;
 import br.com.inatel.themovieclub.model.Comment;
 import br.com.inatel.themovieclub.repository.CommentRepository;
+import br.com.inatel.themovieclub.repository.ReviewRepository;
+import br.com.inatel.themovieclub.repository.UserRepository;
 
 @RestController
 @RequestMapping("/comments")
@@ -30,10 +36,18 @@ public class CommentController {
     
     @Autowired
     private CommentRepository commentRepository;
+    
+    @Autowired
+    private ReviewRepository reviewRepository;
+    
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
-    public List<Comment> list() {
-        return commentRepository.findAll();
+    public Page<CommentDto> list(@PageableDefault(sort = "id", size = 10) Pageable pageable) {
+    	Page<Comment> comments = commentRepository.findAll(pageable);
+    	
+        return CommentDto.toCommentDto(comments);
     }
 
     @GetMapping("{id}")
@@ -49,7 +63,7 @@ public class CommentController {
     @PostMapping
     @Transactional
     public ResponseEntity<CommentDto> create(@RequestBody @Valid CommentForm form, UriComponentsBuilder uriBuilder) {
-        Comment comment = form.toComment();
+        Comment comment = form.toComment(userRepository, reviewRepository);
         commentRepository.save(comment);
         URI uri = uriBuilder.path("/comments/{id}").buildAndExpand(comment.getId()).toUri();
         return ResponseEntity.created(uri).body(new CommentDto(comment));

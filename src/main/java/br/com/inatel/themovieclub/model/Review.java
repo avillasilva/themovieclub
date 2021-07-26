@@ -22,7 +22,7 @@ public class Review {
 	private User author;
 	
 	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<>();
 
 	private String title;
 	private String content;
@@ -30,11 +30,9 @@ public class Review {
 	
 	public Review() {}
 
-	public Review(String title, User author, String content, boolean isPublic) {
+	public Review(String title, String content, boolean isPublic) {
 		this.title = title;
-		this.author = author;
 		this.content = content;
-		this.comments = new ArrayList<>();
 		this.isPublic = isPublic;
 	}
 

@@ -10,36 +10,46 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Comment {
 	
-	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Review review;
 	
-	private String author;
-	private String content;
+	@ManyToOne
+	private User author;
 	
+	private String comment;
 	
 	public Comment() {}
 	
-	public Comment(String author, String content) {
+	public Comment(User author, String comment, Review review) {
 		this.author = author;
-		this.content = content;
+		this.comment = comment;
+		this.review = review;
 	}
 	
 	public Long getId() {
 		return id;
 	}
 
-	public String getContent() {
-		return content;
+	public String getComment() {
+		return comment;
 	}
 	
-	public String getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setComment(String content) {
+		this.comment = content;
+	}
+	
+	public Review getReview() {
+		return review;
+	}
+	
+	public void setReview(Review review) {
+		this.review = review;
 	}
 }

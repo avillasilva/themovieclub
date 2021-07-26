@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,6 +19,8 @@ import javax.persistence.OneToOne;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements UserDetails {
 
@@ -32,14 +33,27 @@ public class User implements UserDetails {
 	private String password;
 	private LocalDateTime cratedAt = LocalDateTime.now();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<User> friends;
+//	@OneToMany(mappedBy = "friendRequester")
+//	private List<Friendship> requestedFriends;
+	
+//	@OneToMany(mappedBy = "friendReceiver")
+//	private List<Friendship> receivedFriends;
+	
+//	@ManyToMany
+//	@JoinTable(name = "user_friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
+//	private List<User> friends;
 	
 	@OneToOne
 	private MovieList watchedMovies;
 	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	private List<Review> reviews;
+	
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	private List<MovieList> movieLists = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Profile> profiles = new ArrayList<>();
@@ -103,16 +117,20 @@ public class User implements UserDetails {
 		return cratedAt;
 	}
 
-	public List<User> getFriends() {
-		return friends;
-	}
-
-	public void addFriend(User user) {
-		friends.add(user);
-	}
-
-	public void unfriend(User user) {
-		friends.remove(user);
+//	public List<User> getFriends() {
+//		return friends;
+//	}
+//
+//	public void addFriend(User user) {
+//		friends.add(user);
+//	}
+//
+//	public void unfriend(User user) {
+//		friends.remove(user);
+//	}
+	
+	public List<MovieList> getMovieLists() {
+		return movieLists;
 	}
 
 	@Override
