@@ -1,6 +1,5 @@
 package br.com.inatel.themovieclub.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +24,7 @@ public class ApiService {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		MovieDetails movieDetails = restTemplate.getForObject(
-				"https://api.themoviedb.org/3/movie/13355?api_key=48ee1fab81a490fcf35669de4869886f&language=en-US",
+				"https://api.themoviedb.org/3/movie/" + id + "?api_key=48ee1fab81a490fcf35669de4869886f&language=en-US",
 				MovieDetails.class); 
 		
 		return movieDetails;

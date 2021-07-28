@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,12 +15,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User implements UserDetails {
@@ -28,23 +26,17 @@ public class User implements UserDetails {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
+	
+	@Column(unique = true)
 	private String email;
+	
 	private String password;
 	private LocalDateTime cratedAt = LocalDateTime.now();
-	
-//	@OneToMany(mappedBy = "friendRequester")
-//	private List<Friendship> requestedFriends;
-	
-//	@OneToMany(mappedBy = "friendReceiver")
-//	private List<Friendship> receivedFriends;
-	
-//	@ManyToMany
-//	@JoinTable(name = "user_friends", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "friend_id"))
-//	private List<User> friends;
-	
-	@OneToOne
-	private MovieList watchedMovies;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private List<User> friends;
 	
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	private List<Review> reviews;
@@ -117,21 +109,29 @@ public class User implements UserDetails {
 		return cratedAt;
 	}
 
-//	public List<User> getFriends() {
-//		return friends;
-//	}
-//
-//	public void addFriend(User user) {
-//		friends.add(user);
-//	}
-//
-//	public void unfriend(User user) {
-//		friends.remove(user);
-//	}
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void addFriend(User user) {
+		friends.add(user);
+	}
+
+	public void unfriend(User user) {
+		friends.remove(user);
+	}
 	
 	public List<MovieList> getMovieLists() {
 		return movieLists;
 	}
+	
+//	public Set<Long> getWatchedMovies() {
+//		return watchedMovies;
+//	}
+//	
+//	public void setWatchedMovies(Set<Long> watchedMovies) {
+//		this.watchedMovies = watchedMovies;
+//	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

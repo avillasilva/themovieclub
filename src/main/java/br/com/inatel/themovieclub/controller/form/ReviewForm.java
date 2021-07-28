@@ -56,9 +56,9 @@ public class ReviewForm {
 		this.isPublic = isPublic;
 	}
 
-	public Review toReview(UserRepository userRepository) {
-//		User user = userRepository.getById(userId);
-		return new Review(title, content, isPublic);
+	public Review toReview(Long userId, UserRepository userRepository) {
+		User user = userRepository.getById(userId);
+		return new Review(title, content, isPublic, user);
 	}
 
 	public Review update(Long id, ReviewRepository reviewRepository) {

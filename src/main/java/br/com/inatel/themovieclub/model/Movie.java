@@ -1,14 +1,10 @@
 package br.com.inatel.themovieclub.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 @Entity
 public class Movie {
@@ -16,22 +12,20 @@ public class Movie {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private MovieList movieList;
- 
-    @OneToMany
-    private List<Genre> genres;
     
+    private Long originalId;
     private String title;
-    private String overview;
+    private boolean watched;
     
-
     public Movie() {}
 
-    public Movie(Long id, String title, String overview) {
-        this.id = id;
-        this.title = title;
-        this.overview = overview;  
+    public Movie(Long originalId, String title, MovieList movieList) {
+        this.originalId = originalId;
+    	this.title = title;
+        this.movieList = movieList;
+        this.watched = false; 
     }
 
     public Long getId() {
@@ -42,6 +36,14 @@ public class Movie {
         this.id = id;
     }
 
+    public Long getOriginalId() {
+		return originalId;
+	}
+    
+    public void setOriginalId(Long originalId) {
+		this.originalId = originalId;
+	}
+    
     public String getTitle() {
         return title;
     }
@@ -49,23 +51,23 @@ public class Movie {
     public void setTitle(String title) {
         this.title = title;
     }
+    
+    public MovieList getMovieList() {
+		return movieList;
+	}
+    
+    public void setMovieList(MovieList movieList) {
+		this.movieList = movieList;
+	}
 
-    public String getOverview() {
-        return overview;
+    public boolean getWatched() {
+    	return watched;
     }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
+    
+    public void setWatched(boolean watched) {
+    	this.watched = watched;
     }
-
-    // public boolean watched() {
-    //     return watched;
-    // }
-
-    // public void setWatched(boolean watched) {
-    //     this.watched = watched;
-    // }
-
+    
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);

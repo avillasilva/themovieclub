@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +17,7 @@ public class MovieList {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToMany(mappedBy = "movieList", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movieList", cascade = CascadeType.REMOVE)
     private List<Movie> movies = new ArrayList<>();
 
     @ManyToOne
@@ -28,8 +27,9 @@ public class MovieList {
 
     public MovieList() {}
 
-    public MovieList(String name) {
+    public MovieList(String name, User owner) {
         this.name = name;
+        this.owner = owner;
     }
     
     public Long getId() {
@@ -51,6 +51,10 @@ public class MovieList {
     public List<Movie> getMovies() {
         return movies;
     }
+    
+    public void setMovies(List<Movie> movies) {
+		this.movies = movies;
+	}
     
     public void addMovie(Movie movie) {
         movies.add(movie);

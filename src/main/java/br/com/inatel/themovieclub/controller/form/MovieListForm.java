@@ -6,7 +6,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import br.com.inatel.themovieclub.model.MovieList;
-import br.com.inatel.themovieclub.repository.MovieListRepository;
+import br.com.inatel.themovieclub.model.User;
+import br.com.inatel.themovieclub.repository.UserRepository;
 
 public class MovieListForm {
 	
@@ -14,7 +15,7 @@ public class MovieListForm {
 	private String name;
 	
 	@NotNull @NotEmpty
-	private List<Long> movies;
+	private List<String> movies;
 	
 	public String getName() {
 		return name;
@@ -24,15 +25,16 @@ public class MovieListForm {
 		this.name = name;
 	}
 	
-	public List<Long> getMovies() {
+	public List<String> getMovies() {
 		return movies;
 	}
 	
-	public void setMovies(List<Long> movies) {
+	public void setMovies(List<String> movies) {
 		this.movies = movies;
 	}
 	
-	public MovieList toMovieList() {
-		return new MovieList(name);
+	public MovieList toMovieList(Long id, UserRepository userRepository) {
+		User user = userRepository.findById(id).get(); 
+		return new MovieList(name, user);
 	}
 }

@@ -30,10 +30,11 @@ public class Review {
 	
 	public Review() {}
 
-	public Review(String title, String content, boolean isPublic) {
+	public Review(String title, String content, boolean isPublic, User user) {
 		this.title = title;
 		this.content = content;
 		this.isPublic = isPublic;
+		this.author = user;
 	}
 
 	public Long getId() {

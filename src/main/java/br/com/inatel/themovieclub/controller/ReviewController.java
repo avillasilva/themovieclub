@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.inatel.themovieclub.controller.dto.ReviewDto;
-import br.com.inatel.themovieclub.controller.form.PostUpdateForm;
 import br.com.inatel.themovieclub.controller.form.ReviewForm;
 import br.com.inatel.themovieclub.model.Review;
+import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.ReviewRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
 
@@ -62,8 +63,10 @@ public class ReviewController {
 	@PostMapping
 	@Transactional
 	@CacheEvict(value = "reviewList", allEntries = true)
-	public ResponseEntity<ReviewDto> create(@RequestBody @Valid ReviewForm form, UriComponentsBuilder uriBuilder) {
-		Review review = form.toReview(userRepository);
+	public ResponseEntity<ReviewDto> create(Authentication authentication, @RequestBody @Valid ReviewForm form, UriComponentsBuilder uriBuilder) {
+		User user = (User) authentication.getPrincipal();
+		
+		Review review = form.toReview(user.getId(), userRepository);
 		reviewRepository.save(review);
 		
 		URI uri = uriBuilder.path("/reviews/{id}").buildAndExpand(review.getId()).toUri();
