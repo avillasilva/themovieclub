@@ -112,13 +112,10 @@ public class MovieListController {
 		Optional<MovieList> optional = movieListRepository.findById(movieListId);
 		
 		if (optional.isPresent()) {
-			
 			MovieList movieList = optional.get();
 			MovieDetails movieDetails = api.getMovieDetails(movieId);
 			Movie movie = new Movie(movieDetails.getId(), movieDetails.getTitle(), movieList);
 			movieRepository.save(movie);
-			
-//			movieList.addMovie(movie);
 			return ResponseEntity.ok(new MovieListDto(movieList));
 		}
 		

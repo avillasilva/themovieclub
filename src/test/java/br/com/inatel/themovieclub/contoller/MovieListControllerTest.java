@@ -1,5 +1,7 @@
 package br.com.inatel.themovieclub.contoller;
 
+import static org.hamcrest.CoreMatchers.containsString;
+
 import java.net.URI;
 
 import org.junit.Test;
@@ -24,23 +26,6 @@ public class MovieListControllerTest {
 	private MockMvc mockMvc;
 	
 	@Test
-	public void shouldCreateAMovieList() throws Exception {
-		URI uri = new URI("/movieLists");
-		String json = "{"
-				+ "\"name\": \"test movie list correct\","
-				+ "\"movies\": [ \"185\", \"1967\" ]"
-				+ "}";
-		
-		mockMvc
-		.perform(MockMvcRequestBuilders
-				.post(uri)
-				.content(json)
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(MockMvcResultMatchers
-				.status().isCreated());
-	}
-	
-	@Test
 	public void shouldReturn400WhenReceiveingEmptyFields() throws Exception {
 		URI uri = new URI("/movieLists");
 		String json = "{"
@@ -55,5 +40,86 @@ public class MovieListControllerTest {
 				.contentType(MediaType.APPLICATION_JSON))
 		.andExpect(MockMvcResultMatchers
 				.status().is(400));
+	}
+	
+//	@Test
+//	public void shouldCreateAMovieList() throws Exception {
+//		URI uri = new URI("/movieLists");
+//		String json = "{"
+//				+ "\"name\": \"test movie list correct\","
+//				+ "\"movies\": [ \"185\", \"1967\" ]"
+//				+ "}";
+//		
+//		mockMvc
+//		.perform(MockMvcRequestBuilders
+//				.post(uri)
+//				.content(json)
+//				.contentType(MediaType.APPLICATION_JSON))
+//		.andExpect(MockMvcResultMatchers
+//				.status().isCreated());
+//	}
+	
+	@Test
+	public void shouldGetTheDetailsOfTheSpecifiedMovieList() throws Exception {
+		URI uri = new URI("/movieLists/1");
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders.get(uri))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string(containsString("id")))
+			.andExpect(MockMvcResultMatchers.content().string(containsString("name")))
+			.andExpect(MockMvcResultMatchers.content().string(containsString("movies")));
+	}
+	
+	@Test
+	public void shouldChangeTheNameOfTheSpecifiedMovieList() throws Exception {
+		URI uri = new URI("/movieLists/1");
+		String json = "{ \"name\": \"name changed\" }";
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders
+					.put(uri)
+					.content(json)
+					.contentType(MediaType.APPLICATION_JSON))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string(containsString("name changed")));
+	}
+	
+	@Test
+	public void shouldAddTheMovieToTheSpecifiedMovieList() throws Exception {
+		URI uri = new URI("/movieLists/1/addMovie?movieId=1865");
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders.put(uri))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string(containsString("movies")))
+			.andExpect(MockMvcResultMatchers.content().string(containsString("1865")));
+	}
+	
+	@Test
+	public void shouldMarkMovieAsWatched() throws Exception {
+		URI uri = new URI("/movieLists/3/markAsWatched/3");
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders.put(uri))
+			.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	public void shouldRemoveTheSpecifiedMovie() throws Exception {
+		URI uri = new URI("/movieLists/1/removeMovie/1");
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders.delete(uri))
+			.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+	
+	@Test
+	public void shoudDeleteTheSpecifidMovieList() throws Exception {
+		URI uri = new URI("/movieLists/2");
+		
+		mockMvc
+			.perform(MockMvcRequestBuilders.delete(uri))
+			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 }

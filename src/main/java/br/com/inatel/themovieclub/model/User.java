@@ -15,11 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -33,7 +35,7 @@ public class User implements UserDetails {
 	private String email;
 	
 	private String password;
-	private LocalDateTime cratedAt = LocalDateTime.now();
+	private LocalDateTime createdAt = LocalDateTime.now();
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<User> friends;
@@ -60,7 +62,7 @@ public class User implements UserDetails {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cratedAt, email, id, name, password, reviews);
+		return Objects.hash(createdAt, email, id, name, password, reviews);
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class User implements UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		return Objects.equals(cratedAt, other.cratedAt) && Objects.equals(email, other.email)
+		return Objects.equals(createdAt, other.createdAt) && Objects.equals(email, other.email)
 				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
 				&& Objects.equals(password, other.password) && Objects.equals(reviews, other.reviews);
 	}
@@ -105,8 +107,8 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
-	public LocalDateTime getCratedAt() {
-		return cratedAt;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
 	public List<User> getFriends() {
@@ -124,14 +126,6 @@ public class User implements UserDetails {
 	public List<MovieList> getMovieLists() {
 		return movieLists;
 	}
-	
-//	public Set<Long> getWatchedMovies() {
-//		return watchedMovies;
-//	}
-//	
-//	public void setWatchedMovies(Set<Long> watchedMovies) {
-//		this.watchedMovies = watchedMovies;
-//	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

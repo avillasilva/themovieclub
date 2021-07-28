@@ -8,14 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @EnableWebSecurity
-@Order(101)
-@Configuration
 @Profile("test")
-public class TestSecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Order(99)
+@Configuration
+public class TestSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+    	http.authorizeRequests()
         .antMatchers("/**").permitAll()
         .and().csrf().disable();
     }
