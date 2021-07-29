@@ -15,7 +15,7 @@ public class ReviewTest {
 	@BeforeEach
 	void init() {
 		this.user = new User("test user", "user@email.com", "password");
-		this.review = new Review("test review", "content", false, this.user);
+		this.review = new Review("test review", "content", this.user);
 	}
 	
 	@Test

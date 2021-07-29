@@ -42,23 +42,6 @@ public class MovieListControllerTest {
 				.status().is(400));
 	}
 	
-//	@Test
-//	public void shouldCreateAMovieList() throws Exception {
-//		URI uri = new URI("/movieLists");
-//		String json = "{"
-//				+ "\"name\": \"test movie list correct\","
-//				+ "\"movies\": [ \"185\", \"1967\" ]"
-//				+ "}";
-//		
-//		mockMvc
-//		.perform(MockMvcRequestBuilders
-//				.post(uri)
-//				.content(json)
-//				.contentType(MediaType.APPLICATION_JSON))
-//		.andExpect(MockMvcResultMatchers
-//				.status().isCreated());
-//	}
-	
 	@Test
 	public void shouldGetTheDetailsOfTheSpecifiedMovieList() throws Exception {
 		URI uri = new URI("/movieLists/1");

@@ -8,6 +8,11 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +39,9 @@ public class UserController {
     private UserRepository userRepository;
     
 	@GetMapping
-    public List<UserDto> list() {
-		List<User> users = userRepository.findAll(); 
+	@Cacheable(value = "userList")
+    public Page<UserDto> list(@PageableDefault(sort = "id", size = 10) Pageable pageable) {
+		Page<User> users = userRepository.findAll(pageable); 
     	return UserDto.toUserDto(users);
     }
     
@@ -51,6 +57,7 @@ public class UserController {
 	
     @PostMapping
     @Transactional
+    @CacheEvict(value = "userList")
     public ResponseEntity<UserDto> create(@RequestBody @Valid UserForm form, UriComponentsBuilder uriBuilder) {
     	User user = form.toUser();
     	userRepository.save(user);
@@ -62,6 +69,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "userList")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserUpdateForm form) {
     	Optional<User> userOptional = userRepository.findById(id);
     	if (userOptional.isPresent()) {
@@ -74,6 +82,7 @@ public class UserController {
     
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "userList")
     public ResponseEntity<UserDto> delete(@PathVariable Long id){
     	Optional<User> userOptional = userRepository.findById(id);
     	if (userOptional.isPresent()) {
@@ -98,7 +107,7 @@ public class UserController {
 	@Transactional
 	public ResponseEntity<UserDto> addFriend(Authentication auth, @PathVariable Long friendId) {
 		User authUser = (User) auth.getPrincipal();
-		User user = userRepository.getById(authUser.getId());
+		User user = userRepository.findById(authUser.getId()).get();
 		Optional<User> optional = userRepository.findById(friendId);
 		if (optional.isPresent()) {
 			optional.get().addFriend(user);

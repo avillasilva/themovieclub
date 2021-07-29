@@ -2,7 +2,8 @@ package br.com.inatel.themovieclub.controller.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import br.com.inatel.themovieclub.model.Movie;
 import br.com.inatel.themovieclub.model.MovieList;
@@ -35,7 +36,7 @@ public class MovieListDto {
 		return movies;
 	}
 	
-	public static List<MovieListDto> toMovieListDto(List<MovieList> asList) {
-		return asList.stream().map(MovieListDto::new).collect(Collectors.toList());
+	public static Page<MovieListDto> toMovieListDto(Page<MovieList> asList) {
+		return asList.map(MovieListDto::new);
 	}
 }

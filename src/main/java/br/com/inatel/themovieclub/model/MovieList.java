@@ -2,6 +2,7 @@ package br.com.inatel.themovieclub.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,13 +12,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 public class MovieList {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @OneToMany(mappedBy = "movieList", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "movieList", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Movie> movies = new ArrayList<>();
 
     @ManyToOne
@@ -67,4 +72,22 @@ public class MovieList {
     		}
     	}
     }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, movies, name, owner);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MovieList other = (MovieList) obj;
+		return Objects.equals(id, other.id) && Objects.equals(movies, other.movies) && Objects.equals(name, other.name)
+				&& Objects.equals(owner, other.owner);
+	}
 }

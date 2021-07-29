@@ -1,7 +1,9 @@
 package br.com.inatel.themovieclub.model;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,13 +15,14 @@ public class Comment {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private Review review;
 	
 	@ManyToOne
 	private User author;
 	
 	private String comment;
+	private LocalDateTime createdAt;
 	
 	public Comment() {}
 	
@@ -27,6 +30,7 @@ public class Comment {
 		this.author = author;
 		this.comment = comment;
 		this.review = review;
+		this.createdAt = LocalDateTime.now();
 	}
 	
 	public Long getId() {
@@ -51,5 +55,32 @@ public class Comment {
 	
 	public void setReview(Review review) {
 		this.review = review;
+	}
+	
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+	
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(author, comment, createdAt, id, review);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Comment other = (Comment) obj;
+		return Objects.equals(author, other.author) && Objects.equals(comment, other.comment)
+				&& Objects.equals(createdAt, other.createdAt) && Objects.equals(id, other.id)
+				&& Objects.equals(review, other.review);
 	}
 }

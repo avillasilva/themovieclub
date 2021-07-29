@@ -40,16 +40,16 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<User> friends;
 	
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Review> reviews;
 	
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "owner",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<MovieList> movieLists = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "author",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Comment> comments = new ArrayList<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private List<Profile> profiles = new ArrayList<>();
 
 	public User() {}

@@ -20,9 +20,6 @@ public class ReviewForm {
 
     @NotNull @NotEmpty
     private String content;
-    
-    @NotNull
-    private boolean isPublic;
 
 	public String getTitle() {
 		return title;
@@ -47,25 +44,16 @@ public class ReviewForm {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	
-	public boolean isPublic() {
-		return isPublic;
-	}
-
-	public void setPublic(boolean isPublic) {
-		this.isPublic = isPublic;
-	}
 
 	public Review toReview(Long userId, UserRepository userRepository) {
 		User user = userRepository.getById(userId);
-		return new Review(title, content, isPublic, user);
+		return new Review(title, content, user);
 	}
 
 	public Review update(Long id, ReviewRepository reviewRepository) {
 		Review review = reviewRepository.getById(id);
 		review.setTitle(title);
 		review.setContent(content);
-		review.setPublic(isPublic);
 		return review;
 	}
 }

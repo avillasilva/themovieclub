@@ -24,10 +24,6 @@ public class ReviewDto {
 		return title;
 	}
 
-//	public String getAuthorName() {
-//		return authorName;
-//	}
-
 	public String getContent() {
 		return content;
 	}

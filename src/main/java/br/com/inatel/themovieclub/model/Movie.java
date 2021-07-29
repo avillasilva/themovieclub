@@ -1,5 +1,7 @@
 package br.com.inatel.themovieclub.model;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -67,9 +69,23 @@ public class Movie {
     public void setWatched(boolean watched) {
     	this.watched = watched;
     }
-    
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, movieList, originalId, title, watched);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Movie other = (Movie) obj;
+		return Objects.equals(id, other.id) && Objects.equals(movieList, other.movieList)
+				&& Objects.equals(originalId, other.originalId) && Objects.equals(title, other.title)
+				&& watched == other.watched;
+	}
 }

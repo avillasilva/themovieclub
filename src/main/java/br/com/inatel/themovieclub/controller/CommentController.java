@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +26,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.inatel.themovieclub.controller.dto.CommentDto;
 import br.com.inatel.themovieclub.controller.form.CommentForm;
 import br.com.inatel.themovieclub.model.Comment;
+import br.com.inatel.themovieclub.model.Review;
+import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.CommentRepository;
 import br.com.inatel.themovieclub.repository.ReviewRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
@@ -42,6 +46,7 @@ public class CommentController {
     private UserRepository userRepository;
 
     @GetMapping
+    @Cacheable(value = "commentList")
     public Page<CommentDto> list(@PageableDefault(sort = "id", size = 10) Pageable pageable) {
     	Page<Comment> comments = commentRepository.findAll(pageable);
     	
@@ -60,15 +65,24 @@ public class CommentController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "commentList")
     public ResponseEntity<CommentDto> create(@RequestBody @Valid CommentForm form, UriComponentsBuilder uriBuilder) {
-        Comment comment = form.toComment(userRepository, reviewRepository);
-        commentRepository.save(comment);
-        URI uri = uriBuilder.path("/comments/{id}").buildAndExpand(comment.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CommentDto(comment));
+    	Optional<User> optionalUser = userRepository.findById(Long.parseLong(form.getAuthorId()));
+    	Optional<Review> optionalReview = reviewRepository.findById(Long.parseLong(form.getReviewId()));
+    	
+    	if (optionalUser.isPresent() && optionalReview.isPresent()) {
+    		Comment comment = form.toComment(userRepository, reviewRepository);
+    		commentRepository.save(comment);
+    		URI uri = uriBuilder.path("/comments/{id}").buildAndExpand(comment.getId()).toUri();
+    		return ResponseEntity.created(uri).body(new CommentDto(comment));
+    	}
+    	
+    	return ResponseEntity.notFound().build();
     }
 
     @PutMapping("{id}")
     @Transactional
+    @CacheEvict(value = "commentList")
     public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody @Valid CommentForm form) {
     	Optional<Comment> optional = commentRepository.findById(id);
     	if (optional.isPresent()) {
@@ -81,6 +95,7 @@ public class CommentController {
     
     @DeleteMapping("{id}")
     @Transactional
+    @CacheEvict(value = "commentList")
     public ResponseEntity<CommentDto> delete(@PathVariable Long id) {
     	Optional<Comment> optional = commentRepository.findById(id);
     	if (optional.isPresent()) {

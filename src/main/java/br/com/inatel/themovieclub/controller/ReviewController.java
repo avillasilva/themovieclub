@@ -46,7 +46,6 @@ public class ReviewController {
 	@Cacheable(value = "reviewList")
 	public Page<ReviewDto> list(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
 		Page<Review> reviews = reviewRepository.findAll(pageable); 
-		
 		return ReviewDto.toReviewDto(reviews); 
 	}
 	

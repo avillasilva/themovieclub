@@ -4,6 +4,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.UserRepository;
@@ -18,9 +19,6 @@ public class UserUpdateForm {
 
     @NotNull @NotEmpty @Length(min=8)
     private String password;
-
-    @NotNull @NotEmpty @Length(min=8)
-    private String passwordConfirmation;
    
     public String getName() {
         return name;
@@ -34,19 +32,12 @@ public class UserUpdateForm {
         return password;
     }
     
-    public String getPasswordConfirmation() {
-    	return passwordConfirmation;
-    }
-    
     public User update(Long id, UserRepository userRepository) {
-    	if (!password.equals(passwordConfirmation)) {
-            return null;
-        }
-    	
     	User user = userRepository.getById(id);
     	user.setName(name);
     	user.setEmail(email);
-    	user.setPassword(password);
+    	String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+    	user.setPassword(encryptedPassword);
     	return user;
     }
 }

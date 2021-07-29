@@ -3,19 +3,14 @@ package br.com.inatel.themovieclub.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-//Incorporate the api key into properties
 
 @Service
 public class ApiService {
-	
-//	@Value("${api.key}")
-//	private static String apiKey;
-	
-	public MovieList searchMovieByTitle(String query) {
+	public MovieList searchMovieByTitle(String query, String page) {
 		RestTemplate restTemplate = new RestTemplate();
 		
 		MovieList movieList = restTemplate.getForObject(
-				"https://api.themoviedb.org/3/search/movie?api_key=48ee1fab81a490fcf35669de4869886f&language=en-US&query=" + query + "&page=1&include_adult=false", 
+				"https://api.themoviedb.org/3/search/movie?api_key=48ee1fab81a490fcf35669de4869886f&language=en-US&query=" + query + "&page="+ page + "&include_adult=false", 
 				MovieList.class);
 		return movieList;
 	}

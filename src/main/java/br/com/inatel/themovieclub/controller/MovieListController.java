@@ -1,13 +1,15 @@
 package br.com.inatel.themovieclub.controller;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,8 +52,9 @@ public class MovieListController {
 	private ApiService api;
 	
 	@GetMapping
-	public List<MovieListDto> list(Authentication auth) {
-		return MovieListDto.toMovieListDto(movieListRepository.findAll());
+	public Page<MovieListDto> list(@PageableDefault(sort = "id", size = 10) Pageable pageable) {
+		Page<MovieList> movieLists = movieListRepository.findAll(pageable);
+		return MovieListDto.toMovieListDto(movieLists);
 	}
 	
 	@GetMapping("{id}")
@@ -70,14 +73,16 @@ public class MovieListController {
 	public ResponseEntity<MovieListDto> create(Authentication authentication, @RequestBody @Valid MovieListForm form, UriComponentsBuilder uriBuilder) {
 		User user = (User) authentication.getPrincipal();
 		MovieList movieList = form.toMovieList(user.getId(), userRepository);
-		movieListRepository.save(movieList);
 		
 		for (String movieId : form.getMovies()) {
 			MovieDetails movieDetails = api.getMovieDetails(Long.parseLong(movieId));
-			movieRepository.save(new Movie(movieDetails.getId(), movieDetails.getTitle(), movieList));
+			Movie movie = new Movie(movieDetails.getId(), movieDetails.getTitle(), movieList);
+			movieList.addMovie(movie);
+			movieRepository.save(movie);
 		}
 		
-		URI uri = uriBuilder.path("/movielist/{id}").buildAndExpand(movieList.getId()).toUri();
+		movieListRepository.save(movieList);
+		URI uri = uriBuilder.path("/movielists/{id}").buildAndExpand(movieList.getId()).toUri();
 		return ResponseEntity.created(uri).body(new MovieListDto(movieList)); 
 	}
 	

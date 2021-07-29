@@ -50,12 +50,7 @@ public class CommentForm {
     public Comment toComment(UserRepository userRepository, ReviewRepository reviewRepository) {
     	Optional<User> optionalUser = userRepository.findById(Long.parseLong(authorId));
     	Optional<Review> optionalReview = reviewRepository.findById(Long.parseLong(reviewId));
-    	
-    	if (optionalUser.isPresent() && optionalReview.isPresent()) {
-			return new Comment(optionalUser.get(), content, optionalReview.get());
-		}
-    	
-    	return null;
+		return new Comment(optionalUser.get(), content, optionalReview.get());
     }
 
 	public Comment update(Long id, CommentRepository commentRepository) {
