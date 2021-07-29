@@ -11,15 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @EnableWebSecurity
 @Configuration
-@Profile("test")
-//@Order(101)
+//@Profile("test")
+@Order(99)
 public class TestSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
-	@Override
-    @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
+//	@Override
+//    @Bean
+//    protected AuthenticationManager authenticationManager() throws Exception {
+//        return super.authenticationManager();
+//    }
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {

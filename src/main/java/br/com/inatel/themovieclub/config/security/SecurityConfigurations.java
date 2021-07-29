@@ -19,7 +19,7 @@ import br.com.inatel.themovieclub.repository.UserRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+//@Profile("prod")
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
