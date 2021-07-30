@@ -19,6 +19,9 @@ The API provides the following features:
 	- Detail
 	- Update
 	- Delete
+	- List friends
+	- Add friend
+	- Unfriend
 
 - Reviews
 	- Create
