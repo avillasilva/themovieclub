@@ -1,7 +1,8 @@
-Feature: Register in the plataform
+Feature: Creatng a movie lists
 
-Scenario: one user with correct data must be registered
-	Given the email, password and password confirmation
-	When the register request is received
+Scenario: A movie list must be created
+	Given A valid user
+	And A name and list of movies
+	When the review is created
 	Then the user is registered
 	

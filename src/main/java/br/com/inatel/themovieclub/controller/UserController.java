@@ -57,7 +57,7 @@ public class UserController {
 	
     @PostMapping
     @Transactional
-    @CacheEvict(value = "userList")
+    @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> create(@RequestBody @Valid UserForm form, UriComponentsBuilder uriBuilder) {
     	User user = form.toUser();
     	userRepository.save(user);
@@ -69,7 +69,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "userList")
+    @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserUpdateForm form) {
     	Optional<User> userOptional = userRepository.findById(id);
     	if (userOptional.isPresent()) {
@@ -82,7 +82,7 @@ public class UserController {
     
     @DeleteMapping("/{id}")
     @Transactional
-    @CacheEvict(value = "userList")
+    @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> delete(@PathVariable Long id){
     	Optional<User> userOptional = userRepository.findById(id);
     	if (userOptional.isPresent()) {
@@ -108,6 +108,11 @@ public class UserController {
 	public ResponseEntity<UserDto> addFriend(Authentication auth, @PathVariable Long friendId) {
 		User authUser = (User) auth.getPrincipal();
 		User user = userRepository.findById(authUser.getId()).get();
+		
+		if (user.getId() == friendId) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 		Optional<User> optional = userRepository.findById(friendId);
 		if (optional.isPresent()) {
 			optional.get().addFriend(user);

@@ -65,7 +65,7 @@ public class CommentController {
 
     @PostMapping
     @Transactional
-    @CacheEvict(value = "commentList")
+    @CacheEvict(value = "commentList", allEntries = true)
     public ResponseEntity<CommentDto> create(@RequestBody @Valid CommentForm form, UriComponentsBuilder uriBuilder) {
     	Optional<User> optionalUser = userRepository.findById(Long.parseLong(form.getAuthorId()));
     	Optional<Review> optionalReview = reviewRepository.findById(Long.parseLong(form.getReviewId()));
@@ -82,7 +82,7 @@ public class CommentController {
 
     @PutMapping("{id}")
     @Transactional
-    @CacheEvict(value = "commentList")
+    @CacheEvict(value = "commentList", allEntries = true)
     public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody @Valid CommentForm form) {
     	Optional<Comment> optional = commentRepository.findById(id);
     	if (optional.isPresent()) {
@@ -95,7 +95,7 @@ public class CommentController {
     
     @DeleteMapping("{id}")
     @Transactional
-    @CacheEvict(value = "commentList")
+    @CacheEvict(value = "commentList", allEntries = true)
     public ResponseEntity<CommentDto> delete(@PathVariable Long id) {
     	Optional<Comment> optional = commentRepository.findById(id);
     	if (optional.isPresent()) {

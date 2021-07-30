@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
 	
+	private Long id;
 	private boolean adult;
 	private int[] genre_ids;
 	private String original_title;
@@ -60,5 +61,13 @@ public class Movie {
 	public String toString() {
 		return "SearchResult [adult=" + adult + ",\n genre_ids=" + Arrays.toString(genre_ids) + ",\n original_title="
 				+ original_title + ",\n title=" + title + ",\n release_date=" + release_date + "]";
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
 	}
 }
