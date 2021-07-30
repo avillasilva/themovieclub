@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.inatel.themovieclub.controller.dto.MovieListDto;
+import br.com.inatel.themovieclub.controller.form.MovieForm;
 import br.com.inatel.themovieclub.controller.form.MovieListForm;
 import br.com.inatel.themovieclub.controller.form.MovieListUpdateForm;
 import br.com.inatel.themovieclub.model.Movie;
@@ -101,7 +102,12 @@ public class MovieListController {
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public ResponseEntity<MovieListDto> delete(@PathVariable Long id) {
+	public ResponseEntity<MovieListDto> delete(Authentication authenticaion , @PathVariable Long id) {
+		
+		if (authenticaion == null) {
+			return ResponseEntity.status(401).build();
+		}
+		
 		Optional<MovieList> optional = movieListRepository.findById(id);
 		if (optional.isPresent()) {
 			movieListRepository.deleteById(id);
@@ -111,14 +117,14 @@ public class MovieListController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@PutMapping("/{movieListId}/addMovie")
+	@PostMapping("/{movieListId}/movies")
 	@Transactional
-	public ResponseEntity<MovieListDto> addMovie(@PathVariable Long movieListId, @RequestParam Long movieId) {
+	public ResponseEntity<MovieListDto> addMovie(@PathVariable Long movieListId, @RequestBody MovieForm form) {
 		Optional<MovieList> optional = movieListRepository.findById(movieListId);
 		
 		if (optional.isPresent()) {
 			MovieList movieList = optional.get();
-			MovieDetails movieDetails = api.getMovieDetails(movieId);
+			MovieDetails movieDetails = api.getMovieDetails(Long.parseLong(form.getOriginalId()));
 			Movie movie = new Movie(movieDetails.getId(), movieDetails.getTitle(), movieList);
 			movieRepository.save(movie);
 			return ResponseEntity.ok(new MovieListDto(movieList));
@@ -127,7 +133,7 @@ public class MovieListController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@DeleteMapping("/{movieListId}/removeMovie/{movieId}")
+	@DeleteMapping("/{movieListId}/movies/{movieId}")
 	@Transactional
 	public ResponseEntity<MovieListDto> removeMovie(@PathVariable Long movieListId, @PathVariable Long movieId) {
 		Optional<MovieList> movieListOptional = movieListRepository.findById(movieListId);
@@ -141,14 +147,28 @@ public class MovieListController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@PutMapping("/{movieListId}/markAsWatched/{movieId}")
+	@PutMapping("/{movieListId}/movies/{movieId}/watched")
 	@Transactional
-	public ResponseEntity<MovieListDto> markAsWatchedMovie(Authentication authentication, @PathVariable Long movieListId, @PathVariable Long movieId) {
+	public ResponseEntity<MovieListDto> watched(Authentication authentication, @PathVariable Long movieListId, @PathVariable Long movieId) {
 		Optional<MovieList> movieListOptional = movieListRepository.findById(movieListId);
 		Optional<Movie> movieOptional = movieRepository.findById(movieId);
 		
 		if (movieListOptional.isPresent() && movieOptional.isPresent()) {
 			movieOptional.get().setWatched(true);
+			return ResponseEntity.ok().build();
+		}
+		
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/{movieListId}/movies/{movieId}/not-watched")
+	@Transactional
+	public ResponseEntity<MovieListDto> notWatched(Authentication authentication, @PathVariable Long movieListId, @PathVariable Long movieId) {
+		Optional<MovieList> movieListOptional = movieListRepository.findById(movieListId);
+		Optional<Movie> movieOptional = movieRepository.findById(movieId);
+		
+		if (movieListOptional.isPresent() && movieOptional.isPresent()) {
+			movieOptional.get().setWatched(false);
 			return ResponseEntity.ok().build();
 		}
 		

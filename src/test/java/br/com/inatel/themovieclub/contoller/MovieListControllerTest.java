@@ -105,4 +105,20 @@ public class MovieListControllerTest {
 			.perform(MockMvcRequestBuilders.delete(uri))
 			.andExpect(MockMvcResultMatchers.status().isOk());
 	}
+	
+//	@Test
+//	public void shouldAddMovie() throws Exception {
+//		URI uri = new URI("/movieList/1/movies");
+//		
+//		String json = "{"
+//				+ "\"originalId\": [ \"1860\" ]"
+//				+ "}";
+//		
+//		mockMvc.perform(MockMvcRequestBuilders
+//				.post(uri)
+//				.content(json)
+//				.contentType(MediaType.APPLICATION_JSON))
+//		.andExpect(MockMvcResultMatchers
+//				.status().is(201));
+//	}
 }
