@@ -44,7 +44,7 @@ public class ReviewController {
 	
 	@GetMapping
 	@Cacheable(value = "reviewList")
-	public Page<ReviewDto> list(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
+	public Page<ReviewDto> list(Authentication authentication, @PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
 		Page<Review> reviews = reviewRepository.findAll(pageable); 
 		return ReviewDto.toReviewDto(reviews); 
 	}
@@ -52,11 +52,12 @@ public class ReviewController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ReviewDto> detail(@PathVariable Long id) {
 		Optional<Review> review = reviewRepository.findById(id);
-		if (review.isPresent()) {
-			return ResponseEntity.ok(new ReviewDto(review.get()));
+		
+		if (!review.isPresent()) {
+			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(new ReviewDto(review.get()));
 	}
 	
 	@PostMapping
@@ -75,26 +76,38 @@ public class ReviewController {
 	@PutMapping("/{id}")
 	@Transactional
 	@CacheEvict(value = "reviewList", allEntries = true)
-	public ResponseEntity<ReviewDto> update(@PathVariable Long id, @RequestBody @Valid ReviewForm form) {
+	public ResponseEntity<ReviewDto> update(Authentication authentication, @PathVariable Long id, @RequestBody @Valid ReviewForm form) {
+		User user = (User) authentication.getPrincipal();
 		Optional<Review> reviewOptional = reviewRepository.findById(id);
-    	if (reviewOptional.isPresent()) {
-			Review review = form.update(id, reviewRepository);
-			return ResponseEntity.ok(new ReviewDto(review));
+    	
+		if (!reviewOptional.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		if (reviewOptional.get().getAuthor().getId() != user.getId()) {
+			return ResponseEntity.status(403).build();
 		}
     	
-    	return ResponseEntity.notFound().build();
+		Review review = form.update(id, reviewRepository);
+		return ResponseEntity.ok(new ReviewDto(review));
 	}
 	
 	@DeleteMapping("/{id}")
     @Transactional
 	@CacheEvict(value = "reviewList", allEntries = true)
-    public ResponseEntity<ReviewDto> delete(@PathVariable Long id){
-    	Optional<Review> reviewOptional = reviewRepository.findById(id);
-    	if (reviewOptional.isPresent()) {
-    		reviewRepository.deleteById(id);			
-    		return ResponseEntity.ok().build();
-		}
+    public ResponseEntity<ReviewDto> delete(Authentication authentication, @PathVariable Long id){
+    	User user = (User) authentication.getPrincipal();
+		Optional<Review> reviewOptional = reviewRepository.findById(id);
     	
-    	return ResponseEntity.notFound().build();
+		if (!reviewOptional.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+
+		if (reviewOptional.get().getAuthor().getId() != user.getId()) {
+			return ResponseEntity.status(403).build();
+		}
+
+		reviewRepository.deleteById(id);			
+		return ResponseEntity.ok().build();
     }
 }

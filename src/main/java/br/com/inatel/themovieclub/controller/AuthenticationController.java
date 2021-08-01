@@ -37,7 +37,7 @@ public class AuthenticationController {
 
             return ResponseEntity.ok(new TokenDto(token, "Bearer"));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(403).build();
         }
     }
 }

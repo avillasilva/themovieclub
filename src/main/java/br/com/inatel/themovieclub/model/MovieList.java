@@ -53,6 +53,14 @@ public class MovieList {
         this.name = name;
     }
 
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public List<Movie> getMovies() {
         return movies;
     }
