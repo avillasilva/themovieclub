@@ -3,7 +3,7 @@ package br.com.inatel.themovieclub.controller.form;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class LoginForm {
-    
+
     private String email;
     private String password;
 
@@ -26,4 +26,5 @@ public class LoginForm {
     public UsernamePasswordAuthenticationToken getToken() {
         return new UsernamePasswordAuthenticationToken(email, password);
     }
+
 }

@@ -13,8 +13,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class TheMovieClubApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TheMovieClubApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TheMovieClubApplication.class, args);
+    }
 
 }

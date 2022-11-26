@@ -7,86 +7,88 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDetails {
-	
-	private Long id;
-	private String title;
-	private String status;
-	private Date release_date;
-	private String popularity;
-	private String overview;
-	private String original_language;
-	private Genre[] genres;
-	
-	public Genre[] getGenres() {
-		return genres;
-	}
 
-	public void setGenres(Genre[] genres) {
-		this.genres = genres;
-	}
+    private Long id;
+    private String title;
+    private String status;
+    private Date release_date;
+    private String popularity;
+    private String overview;
+    private String original_language;
+    private Genre[] genres;
 
-	public MovieDetails() {}
+    public Genre[] getGenres() {
+        return genres;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setGenres(Genre[] genres) {
+        this.genres = genres;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public MovieDetails() {
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getStatus() {
-		return status;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public Date getRelease_date() {
-		return release_date;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public void setRelease_date(Date release_date) {
-		this.release_date = release_date;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public String getPopularity() {
-		return popularity;
-	}
+    public Date getRelease_date() {
+        return release_date;
+    }
 
-	public void setPopularity(String popularity) {
-		this.popularity = popularity;
-	}
+    public void setRelease_date(Date release_date) {
+        this.release_date = release_date;
+    }
 
-	public String getOverview() {
-		return overview;
-	}
+    public String getPopularity() {
+        return popularity;
+    }
 
-	public void setOverview(String overview) {
-		this.overview = overview;
-	}
+    public void setPopularity(String popularity) {
+        this.popularity = popularity;
+    }
 
-	public String getOriginal_language() {
-		return original_language;
-	}
+    public String getOverview() {
+        return overview;
+    }
 
-	public void setOriginal_language(String original_language) {
-		this.original_language = original_language;
-	}
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
-	@Override
-	public String toString() {
-		return "MovieDetails [id=" + id + ",\n title=" + title + ",\n status=" + status + ",\n release_date=" + release_date
-				+ ",\n popularity=" + popularity + ",\n overview=" + overview + ",\n original_language=" + original_language
-				+ ",\n genres=" + Arrays.toString(genres) + "]";
-	}
+    public String getOriginal_language() {
+        return original_language;
+    }
+
+    public void setOriginal_language(String original_language) {
+        this.original_language = original_language;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDetails [id=" + id + ",\n title=" + title + ",\n status=" + status + ",\n release_date=" + release_date
+                + ",\n popularity=" + popularity + ",\n overview=" + overview + ",\n original_language=" + original_language + ",\n genres="
+                + Arrays.toString(genres) + "]";
+    }
+
 }

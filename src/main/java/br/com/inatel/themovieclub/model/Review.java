@@ -17,85 +17,87 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Review {
-	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne
-	private User author;
-	
-	@OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Comment> comments = new ArrayList<>();
 
-	private String title;
-	private String content;
-	
-	public Review() {}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public Review(String title, String content, User user) {
-		this.title = title;
-		this.content = content;
-		this.author = user;
-	}
+    @ManyToOne
+    private User author;
 
-	public Long getId() {
-		return id;
-	}
-	
-	public String getTitle() {
-		return title;
-	}
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Comment> comments = new ArrayList<>();
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    private String title;
+    private String content;
 
-	public User getAuthor() {
-		return author;
-	}
+    public Review() {
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public Review(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.author = user;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public List<Comment> getComments() {
-		return comments;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void addComment(Comment comment) {
-		comments.add(comment);
-	}
-	
-	public void deleteComment(Long id) {
-		for(Comment c : comments) {
-			if(c.getId() == id) {
-				comments.remove(c);
-				return;
-			}
-		}
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(author, comments, content, id, title);
-	}
+    public User getAuthor() {
+        return author;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Review other = (Review) obj;
-		return Objects.equals(author, other.author) && Objects.equals(comments, other.comments)
-				&& Objects.equals(content, other.content) && Objects.equals(id, other.id)
-				&& Objects.equals(title, other.title);
-	}
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void deleteComment(Long id) {
+        for (Comment c : comments) {
+            if (c.getId() == id) {
+                comments.remove(c);
+                return;
+            }
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(author, comments, content, id, title);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Review other = (Review) obj;
+        return Objects.equals(author, other.author) && Objects.equals(comments, other.comments) && Objects.equals(content, other.content)
+                && Objects.equals(id, other.id) && Objects.equals(title, other.title);
+    }
+
 }

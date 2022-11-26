@@ -34,115 +34,115 @@ import br.com.inatel.themovieclub.repository.UserRepository;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    
+
     @Autowired
     private UserRepository userRepository;
-    
-	@GetMapping
-	@Cacheable(value = "userList")
+
+    @GetMapping
+    @Cacheable(value = "userList")
     public Page<UserDto> list(@PageableDefault(sort = "id", size = 10) Pageable pageable) {
-		Page<User> users = userRepository.findAll(pageable); 
-    	return UserDto.toUserDto(users);
+        Page<User> users = userRepository.findAll(pageable);
+        return UserDto.toUserDto(users);
     }
-    
-	@GetMapping("/{id}")
-	public ResponseEntity<UserDto> detail(@PathVariable Long id) {
-		Optional<User> user = userRepository.findById(id);
-		if (user.isPresent()) {
-			return ResponseEntity.ok(new UserDto(user.get()));
-		}
-		
-		return ResponseEntity.notFound().build();
-	}
-	
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> detail(@PathVariable Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            return ResponseEntity.ok(new UserDto(user.get()));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping
     @Transactional
     @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> create(@RequestBody @Valid UserForm form, UriComponentsBuilder uriBuilder) {
-    	User user = form.toUser();
-    	userRepository.save(user);
-    	
-    	URI uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
-    	return ResponseEntity.created(uri).body(new UserDto(user));
+        User user = form.toUser();
+        userRepository.save(user);
+
+        URI uri = uriBuilder.path("/users/{id}").buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UserDto(user));
     }
-	
 
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> update(Authentication authentication, @PathVariable Long id, @RequestBody @Valid UserUpdateForm form) {
-		if (((User) authentication.getPrincipal()).getId() != id) {
-			return ResponseEntity.status(403).build();
-		}
-		
-		User user = form.update(id, userRepository);
-		return ResponseEntity.ok(new UserDto(user));
+        if (((User) authentication.getPrincipal()).getId() != id) {
+            return ResponseEntity.status(403).build();
+        }
+
+        User user = form.update(id, userRepository);
+        return ResponseEntity.ok(new UserDto(user));
     }
-    
+
     @DeleteMapping("/{id}")
     @Transactional
     @CacheEvict(value = "userList", allEntries = true)
-    public ResponseEntity<UserDto> delete(Authentication authentication, @PathVariable Long id){
-		if (((User) authentication.getPrincipal()).getId() != id) {
-			return ResponseEntity.status(403).build();
-		}
-		
-		userRepository.deleteById(id);			
-		return ResponseEntity.ok().build();
+    public ResponseEntity<UserDto> delete(Authentication authentication, @PathVariable Long id) {
+        if (((User) authentication.getPrincipal()).getId() != id) {
+            return ResponseEntity.status(403).build();
+        }
+
+        userRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
-	@GetMapping("/{id}/friends")
-	public ResponseEntity<List<UserDto>> getFriends(Authentication authentication, @PathVariable Long id) {
-		if (((User) authentication.getPrincipal()).getId() != id) {
-			return ResponseEntity.status(403).build();
-		}
-		
-		Optional<User> optional = userRepository.findById(id);
-		if (!optional.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		return ResponseEntity.ok(UserDto.toUserDto(optional.get().getFriends()));
-	}
+    @GetMapping("/{id}/friends")
+    public ResponseEntity<List<UserDto>> getFriends(Authentication authentication, @PathVariable Long id) {
+        if (((User) authentication.getPrincipal()).getId() != id) {
+            return ResponseEntity.status(403).build();
+        }
 
-	@PutMapping("{id}/friends/{friendId}")
-	@Transactional
-	public ResponseEntity<UserDto> addFriend(Authentication authentication, @PathVariable Long id, @PathVariable Long friendId) {
-		User authUser = (User) authentication.getPrincipal();
-		
-		if (authUser.getId() == friendId) {
-			return ResponseEntity.badRequest().build();
-		}
+        Optional<User> optional = userRepository.findById(id);
+        if (!optional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
 
-		if (authUser.getId() != id) {
-			return ResponseEntity.status(403).build();
-		}
-		
-		User user = userRepository.findById(authUser.getId()).get();
-		Optional<User> optional = userRepository.findById(friendId);
-		
-		if (!optional.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		optional.get().addFriend(user);
-		user.addFriend(optional.get());
-		return ResponseEntity.ok(new UserDto(user));
-	}
+        return ResponseEntity.ok(UserDto.toUserDto(optional.get().getFriends()));
+    }
 
-	@DeleteMapping("{id}/friends/{friendId}")
-	@Transactional
-	public ResponseEntity<UserDto> unfriend(Authentication auth, @PathVariable Long friendId) {
-		User authUser = (User) auth.getPrincipal();
-		User user = userRepository.findById(authUser.getId()).get();
-		Optional<User> friend = userRepository.findById(friendId);
-		
-		if (friend.isPresent()) {
-			user.unfriend(friend.get());
-			friend.get().unfriend(user);
-			return ResponseEntity.ok().build();
-		}
+    @PutMapping("{id}/friends/{friendId}")
+    @Transactional
+    public ResponseEntity<UserDto> addFriend(Authentication authentication, @PathVariable Long id, @PathVariable Long friendId) {
+        User authUser = (User) authentication.getPrincipal();
 
-		return ResponseEntity.notFound().build();
-	}
+        if (authUser.getId() == friendId) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (authUser.getId() != id) {
+            return ResponseEntity.status(403).build();
+        }
+
+        User user = userRepository.findById(authUser.getId()).get();
+        Optional<User> optional = userRepository.findById(friendId);
+
+        if (!optional.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        optional.get().addFriend(user);
+        user.addFriend(optional.get());
+        return ResponseEntity.ok(new UserDto(user));
+    }
+
+    @DeleteMapping("{id}/friends/{friendId}")
+    @Transactional
+    public ResponseEntity<UserDto> unfriend(Authentication auth, @PathVariable Long friendId) {
+        User authUser = (User) auth.getPrincipal();
+        User user = userRepository.findById(authUser.getId()).get();
+        Optional<User> friend = userRepository.findById(friendId);
+
+        if (friend.isPresent()) {
+            user.unfriend(friend.get());
+            friend.get().unfriend(user);
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
 }

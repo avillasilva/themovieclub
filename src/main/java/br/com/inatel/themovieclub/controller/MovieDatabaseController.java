@@ -13,17 +13,18 @@ import br.com.inatel.themovieclub.service.MovieList;
 @RestController
 @RequestMapping("/movieDatabase")
 public class MovieDatabaseController {
-	
-	@Autowired
-	private ApiService apiService;
-	
-	@GetMapping("/search")
-	public MovieList searchMovie(@RequestParam(required = true) String title, @RequestParam(required = true) String page) {
-		return apiService.searchMovieByTitle(title, page);
-	}
-	
-	@GetMapping("/movies")
-	public MovieDetails getMovie(@RequestParam(required = true) Long movieId) {
-		return apiService.getMovieDetails(movieId);
-	}
+
+    @Autowired
+    private ApiService apiService;
+
+    @GetMapping("/search")
+    public MovieList searchMovie(@RequestParam(required = true) String title, @RequestParam(required = true) String page) {
+        return apiService.searchMovieByTitle(title, page);
+    }
+
+    @GetMapping("/movies")
+    public MovieDetails getMovie(@RequestParam(required = true) Long movieId) {
+        return apiService.getMovieDetails(movieId);
+    }
+
 }

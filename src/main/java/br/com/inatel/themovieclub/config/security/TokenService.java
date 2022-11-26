@@ -16,10 +16,10 @@ public class TokenService {
 
     @Value("${themovieclub.jwt.expiration}")
     private String expiration;
-    
+
     @Value("${themovieclub.jwt.secret}")
     private String secret;
-    
+
     public String generateToken(Authentication auth) {
         User user = (User) auth.getPrincipal();
         Date today = new Date();
@@ -42,9 +42,10 @@ public class TokenService {
             return false;
         }
     }
-    
+
     public Long getUserId(String token) {
-    	Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-    	return Long.parseLong(claims.getSubject());
+        Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject());
     }
+
 }

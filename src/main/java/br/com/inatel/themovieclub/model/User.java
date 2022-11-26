@@ -24,141 +24,143 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = "users")
 public class User implements UserDetails {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String name;
-	
-	@Column(unique = true)
-	private String email;
-	
-	private String password;
-	private LocalDateTime createdAt = LocalDateTime.now();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<User> friends;
-	
-	@OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<Review> reviews;
-	
-	@OneToMany(mappedBy = "owner",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<MovieList> movieLists = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "author",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<Comment> comments = new ArrayList<>();
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<Profile> profiles = new ArrayList<>();
+    private String name;
 
-	public User() {}
+    @Column(unique = true)
+    private String email;
 
-	public User(String name, String email, String password) {
-		this.name = name;
-		this.email = email;
-		this.password = password;
-	}
+    private String password;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(createdAt, email, id, name, password, reviews);
-	}
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<User> friends;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		return Objects.equals(createdAt, other.createdAt) && Objects.equals(email, other.email)
-				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(password, other.password) && Objects.equals(reviews, other.reviews);
-	}
+    @OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<Review> reviews;
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "owner", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<MovieList> movieLists = new ArrayList<>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<Comment> comments = new ArrayList<>();
 
-	public String getName() {
-		return name;
-	}
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<Profile> profiles = new ArrayList<>();
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public User() {
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(createdAt, email, id, name, password, reviews);
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        return Objects.equals(createdAt, other.createdAt) && Objects.equals(email, other.email) && Objects.equals(id, other.id)
+                && Objects.equals(name, other.name) && Objects.equals(password, other.password) && Objects.equals(reviews, other.reviews);
+    }
 
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public List<User> getFriends() {
-		return friends;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void addFriend(User user) {
-		friends.add(user);
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void unfriend(User user) {
-		friends.remove(user);
-	}
-	
-	public List<MovieList> getMovieLists() {
-		return movieLists;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.profiles;
-	}
-	
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public String getUsername() {
-		return null;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    public List<User> getFriends() {
+        return friends;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    public void addFriend(User user) {
+        friends.add(user);
+    }
+
+    public void unfriend(User user) {
+        friends.remove(user);
+    }
+
+    public List<MovieList> getMovieLists() {
+        return movieLists;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.profiles;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }

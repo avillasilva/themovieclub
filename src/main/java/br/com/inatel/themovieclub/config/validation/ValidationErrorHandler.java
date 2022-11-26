@@ -15,22 +15,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ValidationErrorHandler {
-	
-	@Autowired
-	private MessageSource msgSource;
-	
-	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public List<FormErrorDto> handle(MethodArgumentNotValidException exception) {
-		List<FormErrorDto> dto = new ArrayList<FormErrorDto>();
-		
-		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-		fieldErrors.forEach(e -> {
-			String msg = msgSource.getMessage(e, LocaleContextHolder.getLocale());
-			FormErrorDto error = new FormErrorDto(e.getField(), msg);
-			dto.add(error);
-		});
-		
-		return dto;
-	}
+
+    @Autowired
+    private MessageSource msgSource;
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public List<FormErrorDto> handle(MethodArgumentNotValidException exception) {
+        List<FormErrorDto> dto = new ArrayList<FormErrorDto>();
+
+        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
+        fieldErrors.forEach(e -> {
+            String msg = msgSource.getMessage(e, LocaleContextHolder.getLocale());
+            FormErrorDto error = new FormErrorDto(e.getField(), msg);
+            dto.add(error);
+        });
+
+        return dto;
+    }
+
 }

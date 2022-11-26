@@ -10,34 +10,40 @@ import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.UserRepository;
 
 public class UserUpdateForm {
-	
-	@NotNull @NotEmpty @Length(min=5)
+
+    @NotNull
+    @NotEmpty
+    @Length(min = 5)
     private String name;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String email;
 
-    @NotNull @NotEmpty @Length(min=8)
+    @NotNull
+    @NotEmpty
+    @Length(min = 8)
     private String password;
-   
+
     public String getName() {
         return name;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public String getPassword() {
         return password;
     }
-    
+
     public User update(Long id, UserRepository userRepository) {
-    	User user = userRepository.getById(id);
-    	user.setName(name);
-    	user.setEmail(email);
-    	String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-    	user.setPassword(encryptedPassword);
-    	return user;
+        User user = userRepository.getById(id);
+        user.setName(name);
+        user.setEmail(email);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+        user.setPassword(encryptedPassword);
+        return user;
     }
+
 }

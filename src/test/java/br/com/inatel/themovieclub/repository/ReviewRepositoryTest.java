@@ -12,15 +12,16 @@ import br.com.inatel.themovieclub.model.Review;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class ReviewRepositoryTest {
-	
-	@Autowired
-	private ReviewRepository reviewRepository;
-	
-	@Test
-	public void shouldLoadReviewByTitle() {
-		String title = "Review 1 - Luiz";
-		Review review = reviewRepository.findByTitle(title);
-		Assert.assertNotNull(review);
-		Assert.assertEquals(title, review.getTitle());
-	}
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Test
+    public void shouldLoadReviewByTitle() {
+        String title = "Review 1 - Luiz";
+        Review review = reviewRepository.findByTitle(title);
+        Assert.assertNotNull(review);
+        Assert.assertEquals(title, review.getTitle());
+    }
+
 }

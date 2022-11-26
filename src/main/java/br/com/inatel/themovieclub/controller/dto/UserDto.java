@@ -9,33 +9,34 @@ import br.com.inatel.themovieclub.model.User;
 
 public class UserDto {
 
-	private Long id;
-	private String name;
-	private String email;
-	
-	public UserDto(User user) {
-		this.id = user.getId();
-		this.name = user.getName();
-		this.email = user.getEmail();
-	}
-	
-	public Long getId() {
-		return id;
-	}
+    private Long id;
+    private String name;
+    private String email;
 
-	public String getName() {
-		return name;
-	}
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+    }
 
-	public String getEmail() {
-		return email;
-	}
-	
-	public static Page<UserDto> toUserDto(Page<User> userList) {
-		return userList.map(UserDto::new);
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public static List<UserDto> toUserDto(List<User> friends) {
-		return friends.stream().map(UserDto::new).collect(Collectors.toList());
-	}
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public static Page<UserDto> toUserDto(Page<User> userList) {
+        return userList.map(UserDto::new);
+    }
+
+    public static List<UserDto> toUserDto(List<User> friends) {
+        return friends.stream().map(UserDto::new).collect(Collectors.toList());
+    }
+
 }

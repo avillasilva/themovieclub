@@ -11,9 +11,9 @@ import org.junit.Test;
 //@ActiveProfiles("test")
 public class TheMovieClubApplicationTests {
 
-	@Test
-	public void contextLoads() {
-		Assert.assertTrue(true);
-	}
+    @Test
+    public void contextLoads() {
+        Assert.assertTrue(true);
+    }
 
 }

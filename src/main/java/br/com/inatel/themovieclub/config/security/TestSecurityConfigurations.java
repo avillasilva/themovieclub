@@ -13,16 +13,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Profile("test")
 public class TestSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
-	@Override
+    @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
         return super.authenticationManager();
     }
-	
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-    	http.authorizeRequests()
-        .antMatchers("/**").permitAll()
-        .and().csrf().disable();
+        http.authorizeRequests().antMatchers("/**").permitAll().and().csrf().disable();
     }
+
 }

@@ -9,7 +9,7 @@ public class TokenDto {
         this.token = token;
         this.type = type;
     }
-    
+
     public String getToken() {
         return token;
     }
@@ -17,4 +17,5 @@ public class TokenDto {
     public String getType() {
         return type;
     }
+
 }

@@ -9,9 +9,9 @@ import br.com.inatel.themovieclub.model.Comment;
 public class CommentDto {
 
     private Long id;
-	private String authorName;
-	private String content;
-	private LocalDateTime createdAt;
+    private String authorName;
+    private String content;
+    private LocalDateTime createdAt;
 
     public CommentDto(Comment comment) {
         this.id = comment.getId();
@@ -31,12 +31,13 @@ public class CommentDto {
     public String getContent() {
         return content;
     }
-    
-    public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
 
-	public static Page<CommentDto> toCommentDto(Page<Comment> comments) {
-		return comments.map(CommentDto::new);
-	}
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public static Page<CommentDto> toCommentDto(Page<Comment> comments) {
+        return comments.map(CommentDto::new);
+    }
+
 }

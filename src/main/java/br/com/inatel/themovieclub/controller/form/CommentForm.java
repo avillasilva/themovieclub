@@ -13,14 +13,17 @@ import br.com.inatel.themovieclub.repository.ReviewRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
 
 public class CommentForm {
-    
-    @NotNull @NotEmpty
+
+    @NotNull
+    @NotEmpty
     private String authorId;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String content;
-    
-    @NotNull @NotEmpty
+
+    @NotNull
+    @NotEmpty
     private String reviewId;
 
     public String getAuthorId() {
@@ -38,24 +41,25 @@ public class CommentForm {
     public void setContent(String content) {
         this.content = content;
     }
-    
-    public String getReviewId() {
-		return reviewId;
-	}
-    
-    public void setReviewId(String reviewId) {
-		this.reviewId = reviewId;
-	}
 
-    public Comment toComment(UserRepository userRepository, ReviewRepository reviewRepository) {
-    	Optional<User> optionalUser = userRepository.findById(Long.parseLong(authorId));
-    	Optional<Review> optionalReview = reviewRepository.findById(Long.parseLong(reviewId));
-		return new Comment(optionalUser.get(), content, optionalReview.get());
+    public String getReviewId() {
+        return reviewId;
     }
 
-	public Comment update(Long id, CommentRepository commentRepository) {
-		Comment comment = commentRepository.getById(id);
-		comment.setComment(content);
-		return comment;
-	}
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
+    }
+
+    public Comment toComment(UserRepository userRepository, ReviewRepository reviewRepository) {
+        Optional<User> optionalUser = userRepository.findById(Long.parseLong(authorId));
+        Optional<Review> optionalReview = reviewRepository.findById(Long.parseLong(reviewId));
+        return new Comment(optionalUser.get(), content, optionalReview.get());
+    }
+
+    public Comment update(Long id, CommentRepository commentRepository) {
+        Comment comment = commentRepository.getById(id);
+        comment.setComment(content);
+        return comment;
+    }
+
 }

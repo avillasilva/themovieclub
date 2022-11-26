@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.inatel.themovieclub.model.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-	Review findByTitle(String title);
+
+    Review findByTitle(String title);
+
 }

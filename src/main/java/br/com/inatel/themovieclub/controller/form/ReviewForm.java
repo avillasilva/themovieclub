@@ -12,48 +12,53 @@ import br.com.inatel.themovieclub.repository.UserRepository;
 
 public class ReviewForm {
 
-	@NotNull @NotEmpty
-	private String authorId;
-    
-	@NotNull @NotEmpty @Length(min=5)
+    @NotNull
+    @NotEmpty
+    private String authorId;
+
+    @NotNull
+    @NotEmpty
+    @Length(min = 5)
     private String title;
 
-    @NotNull @NotEmpty
+    @NotNull
+    @NotEmpty
     private String content;
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getAuthorId() {
-		return authorId;
-	}
+    public String getAuthorId() {
+        return authorId;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setAuthorId(String authorId) {
-		this.authorId = authorId;
-	}
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public Review toReview(Long userId, UserRepository userRepository) {
-		User user = userRepository.getById(userId);
-		return new Review(title, content, user);
-	}
+    public Review toReview(Long userId, UserRepository userRepository) {
+        User user = userRepository.getById(userId);
+        return new Review(title, content, user);
+    }
 
-	public Review update(Long id, ReviewRepository reviewRepository) {
-		Review review = reviewRepository.getById(id);
-		review.setTitle(title);
-		review.setContent(content);
-		return review;
-	}
+    public Review update(Long id, ReviewRepository reviewRepository) {
+        Review review = reviewRepository.getById(id);
+        review.setTitle(title);
+        review.setContent(content);
+        return review;
+    }
+
 }

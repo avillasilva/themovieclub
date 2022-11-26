@@ -20,7 +20,7 @@ import br.com.inatel.themovieclub.controller.form.LoginForm;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    
+
     @Autowired
     private AuthenticationManager authManager;
 
@@ -40,4 +40,5 @@ public class AuthenticationController {
             return ResponseEntity.status(403).build();
         }
     }
+
 }

@@ -15,20 +15,22 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfigurations {
+
     @Bean
-    public Docket theMovieClubApi() {
+    Docket theMovieClubApi() {
         return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("br.com.inatel.themovieclub"))
-            .paths(PathSelectors.ant("/**"))
-            .build()
-            .ignoredParameterTypes(User.class)
-            .globalOperationParameters(Arrays.asList(new ParameterBuilder()
-                            .name("Authorization")
-                            .description("Header for JWT")
-                            .modelRef(new ModelRef("string"))
-                            .parameterType("header")
-                            .required(false)
-                            .build()));
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("br.com.inatel.themovieclub"))
+                .paths(PathSelectors.ant("/**"))
+                .build()
+                .ignoredParameterTypes(User.class)
+                .globalOperationParameters(Arrays.asList(new ParameterBuilder()
+                        .name("Authorization")
+                        .description("Header for JWT")
+                        .modelRef(new ModelRef("string"))
+                        .parameterType("header")
+                        .required(false)
+                        .build()));
     }
+
 }
