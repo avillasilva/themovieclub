@@ -1,19 +1,18 @@
 package br.com.inatel.themovieclub;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
-//import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//@ActiveProfiles("test")
+@SpringBootTest
+@ActiveProfiles("test")
 public class TheMovieClubApplicationTests {
 
     @Test
     public void contextLoads() {
-        Assert.assertTrue(true);
+        assertThat(true).isTrue();
     }
 
 }
