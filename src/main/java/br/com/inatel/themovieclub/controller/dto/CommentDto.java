@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 
 import br.com.inatel.themovieclub.model.Comment;
+import lombok.Getter;
 
+@Getter
 public class CommentDto {
 
     private Long id;
@@ -18,22 +20,6 @@ public class CommentDto {
         this.authorName = comment.getAuthor().getName();
         this.content = comment.getComment();
         this.createdAt = comment.getCreatedAt();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 
     public static Page<CommentDto> toCommentDto(Page<Comment> comments) {

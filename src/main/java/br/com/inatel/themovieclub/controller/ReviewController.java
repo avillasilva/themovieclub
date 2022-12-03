@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +88,7 @@ public class ReviewController {
         }
 
         if (reviewOptional.get().getAuthor().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Review review = form.update(id, reviewRepository);
@@ -106,7 +107,7 @@ public class ReviewController {
         }
 
         if (reviewOptional.get().getAuthor().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         reviewRepository.deleteById(id);

@@ -7,7 +7,9 @@ import org.springframework.data.domain.Page;
 
 import br.com.inatel.themovieclub.model.Movie;
 import br.com.inatel.themovieclub.model.MovieList;
+import lombok.Getter;
 
+@Getter
 public class MovieListDto {
 
     private Long id;
@@ -22,18 +24,6 @@ public class MovieListDto {
         for (Movie movie : movieList.getMovies()) {
             movies.add(new MovieDto(movie));
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<MovieDto> getMovies() {
-        return movies;
     }
 
     public static Page<MovieListDto> toMovieListDto(Page<MovieList> asList) {

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,7 +70,7 @@ public class MovieListController {
         }
 
         if (optional.get().getOwner().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         MovieList movieList = optional.get();
@@ -107,7 +108,7 @@ public class MovieListController {
         }
 
         if (optional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         MovieList movieList = form.update(id, movieListRepository);
@@ -125,7 +126,7 @@ public class MovieListController {
         }
 
         if (optional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         movieListRepository.deleteById(id);
@@ -144,7 +145,7 @@ public class MovieListController {
         }
 
         if (optional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         MovieList movieList = optional.get();
@@ -167,7 +168,7 @@ public class MovieListController {
         }
 
         if (movieListOptional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         movieRepository.deleteById(movieId);
@@ -186,7 +187,7 @@ public class MovieListController {
         }
 
         if (movieListOptional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         movieOptional.get().setWatched(true);
@@ -206,7 +207,7 @@ public class MovieListController {
         }
 
         if (movieListOptional.get().getId() != user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         movieOptional.get().setWatched(false);

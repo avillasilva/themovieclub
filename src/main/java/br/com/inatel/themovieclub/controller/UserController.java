@@ -13,6 +13,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,7 +72,7 @@ public class UserController {
     @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> update(Authentication authentication, @PathVariable Long id, @RequestBody @Valid UserUpdateForm form) {
         if (((User) authentication.getPrincipal()).getId() != id) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         User user = form.update(id, userRepository);
@@ -83,7 +84,7 @@ public class UserController {
     @CacheEvict(value = "userList", allEntries = true)
     public ResponseEntity<UserDto> delete(Authentication authentication, @PathVariable Long id) {
         if (((User) authentication.getPrincipal()).getId() != id) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         userRepository.deleteById(id);
@@ -93,7 +94,7 @@ public class UserController {
     @GetMapping("/{id}/friends")
     public ResponseEntity<List<UserDto>> getFriends(Authentication authentication, @PathVariable Long id) {
         if (((User) authentication.getPrincipal()).getId() != id) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Optional<User> optional = userRepository.findById(id);
@@ -114,7 +115,7 @@ public class UserController {
         }
 
         if (authUser.getId() != id) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         User user = userRepository.findById(authUser.getId()).get();

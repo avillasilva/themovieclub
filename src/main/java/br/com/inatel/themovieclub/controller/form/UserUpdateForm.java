@@ -8,7 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.UserRepository;
+import lombok.Data;
 
+@Data
 public class UserUpdateForm {
 
     @NotNull
@@ -24,18 +26,6 @@ public class UserUpdateForm {
     @NotEmpty
     @Length(min = 8)
     private String password;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public User update(Long id, UserRepository userRepository) {
         User user = userRepository.getById(id);

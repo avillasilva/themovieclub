@@ -1,15 +1,10 @@
 package br.com.inatel.themovieclub.controller.form;
 
+import lombok.Data;
+
+@Data
 public class MovieForm {
 
     private String originalId;
-
-    public String getOriginalId() {
-        return originalId;
-    }
-
-    public void setOriginalId(String originalId) {
-        this.originalId = originalId;
-    }
 
 }

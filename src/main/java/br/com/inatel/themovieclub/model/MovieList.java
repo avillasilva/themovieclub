@@ -2,7 +2,6 @@ package br.com.inatel.themovieclub.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,15 +10,22 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 @Entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class MovieList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @OneToMany(mappedBy = "movieList", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
@@ -29,46 +35,12 @@ public class MovieList {
     @ManyToOne
     private User owner;
 
+    @NotBlank
     private String name;
-
-    public MovieList() {
-    }
 
     public MovieList(String name, User owner) {
         this.name = name;
         this.owner = owner;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
     }
 
     public void addMovie(Movie movie) {
@@ -81,24 +53,6 @@ public class MovieList {
                 movies.remove(movie);
             }
         }
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, movies, name, owner);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        MovieList other = (MovieList) obj;
-        return Objects.equals(id, other.id) && Objects.equals(movies, other.movies) && Objects.equals(name, other.name)
-                && Objects.equals(owner, other.owner);
     }
 
 }

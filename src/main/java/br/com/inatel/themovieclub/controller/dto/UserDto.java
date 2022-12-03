@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 
 import br.com.inatel.themovieclub.model.User;
+import lombok.Getter;
 
+@Getter
 public class UserDto {
 
     private Long id;
@@ -17,18 +19,6 @@ public class UserDto {
         this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public static Page<UserDto> toUserDto(Page<User> userList) {

@@ -7,7 +7,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.inatel.themovieclub.model.User;
+import lombok.Data;
 
+@Data
 public class UserForm {
 
     @NotNull
@@ -23,18 +25,6 @@ public class UserForm {
     @NotEmpty
     @Length(min = 8)
     private String password;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 
     public User toUser() {
         String encryptedPassword = new BCryptPasswordEncoder().encode(password);

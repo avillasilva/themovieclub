@@ -11,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,7 +99,7 @@ public class CommentController {
         }
 
         if (optional.get().getAuthor().getId() == user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Comment comment = form.update(id, commentRepository);
@@ -117,7 +118,7 @@ public class CommentController {
         }
 
         if (optional.get().getAuthor().getId() == user.getId()) {
-            return ResponseEntity.status(403).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         commentRepository.delete(optional.get());

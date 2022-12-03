@@ -1,7 +1,9 @@
 package br.com.inatel.themovieclub.controller.dto;
 
 import br.com.inatel.themovieclub.model.Movie;
+import lombok.Getter;
 
+@Getter
 public class MovieDto {
 
     private Long id;
@@ -13,23 +15,7 @@ public class MovieDto {
         this.id = movie.getId();
         this.originalId = movie.getOriginalId();
         this.title = movie.getTitle();
-        this.watched = movie.getWatched();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getOriginalId() {
-        return originalId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public boolean getWatched() {
-        return watched;
+        this.watched = movie.isWatched();
     }
 
 }

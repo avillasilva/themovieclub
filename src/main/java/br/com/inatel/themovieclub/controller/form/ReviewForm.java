@@ -9,7 +9,9 @@ import br.com.inatel.themovieclub.model.Review;
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.ReviewRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
+import lombok.Data;
 
+@Data
 public class ReviewForm {
 
     @NotNull
@@ -24,30 +26,6 @@ public class ReviewForm {
     @NotNull
     @NotEmpty
     private String content;
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
     public Review toReview(Long userId, UserRepository userRepository) {
         User user = userRepository.getById(userId);

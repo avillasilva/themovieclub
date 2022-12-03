@@ -5,4 +5,4 @@ Scenario: A movie list must be created
 	And A name and list of movies
 	When the review is created
 	Then the user is registered
-	
+
