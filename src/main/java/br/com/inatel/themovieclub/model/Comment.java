@@ -1,7 +1,8 @@
 package br.com.inatel.themovieclub.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,18 +11,19 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Entity
 @Data
+@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Comment {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne
@@ -34,13 +36,10 @@ public class Comment {
     private String comment;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    @Column(updatable = false)
+    private OffsetDateTime createdAt;
 
-    public Comment(User author, String comment, Review review) {
-        this.author = author;
-        this.comment = comment;
-        this.review = review;
-        this.createdAt = LocalDateTime.now();
-    }
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 
 }
