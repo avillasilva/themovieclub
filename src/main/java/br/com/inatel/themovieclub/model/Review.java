@@ -34,12 +34,6 @@ public class Review {
     private String title;
     private String content;
 
-    public Review(String title, String content, User user) {
-        this.title = title;
-        this.content = content;
-        this.author = user;
-    }
-
     public void addComment(Comment comment) {
         comments.add(comment);
     }
