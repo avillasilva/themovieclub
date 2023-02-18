@@ -1,4 +1,4 @@
-package br.com.inatel.themovieclub.service;
+package br.com.inatel.themovieclub.moviedatabaseapi;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

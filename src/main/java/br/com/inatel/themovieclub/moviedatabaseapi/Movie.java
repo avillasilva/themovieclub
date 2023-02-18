@@ -1,4 +1,4 @@
-package br.com.inatel.themovieclub.service;
+package br.com.inatel.themovieclub.moviedatabaseapi;
 
 import java.util.Date;
 
