@@ -7,7 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,10 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AuthenticationByTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
     private TokenService tokenService;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Override
@@ -42,7 +38,7 @@ public class AuthenticationByTokenFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
 
         if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-            return null;
+            return "";
         }
 
         return token.substring(7, token.length());

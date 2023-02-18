@@ -44,9 +44,12 @@ public class DevSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/reviews").permitAll().antMatchers(HttpMethod.GET, "/reviews/*").permitAll()
-                .antMatchers(HttpMethod.POST, "/auth").permitAll().antMatchers(HttpMethod.POST, "/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll().antMatchers("/h2-console/**").permitAll().anyRequest()
+        http.authorizeRequests().antMatchers(HttpMethod.GET, "/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/reviews/*").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .antMatchers("/h2-console/**").permitAll().anyRequest()
                 .authenticated().and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .addFilterBefore(new AuthenticationByTokenFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
 
