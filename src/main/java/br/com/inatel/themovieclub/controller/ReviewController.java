@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.inatel.themovieclub.controller.dto.ReviewReadResponse;
-import br.com.inatel.themovieclub.controller.dto.ReviewSearchResponse;
-import br.com.inatel.themovieclub.controller.form.ReviewRequest;
+import br.com.inatel.themovieclub.controller.request.ReviewRequest;
+import br.com.inatel.themovieclub.controller.response.ReviewReadResponse;
+import br.com.inatel.themovieclub.controller.response.ReviewSearchResponse;
 import br.com.inatel.themovieclub.mapper.ReviewMapper;
 import br.com.inatel.themovieclub.model.Review;
 import br.com.inatel.themovieclub.model.User;

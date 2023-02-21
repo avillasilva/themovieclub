@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.inatel.themovieclub.controller.dto.UserReadResponse;
-import br.com.inatel.themovieclub.controller.dto.UserSearchResponse;
-import br.com.inatel.themovieclub.controller.form.UserRequest;
+import br.com.inatel.themovieclub.controller.request.UserRequest;
+import br.com.inatel.themovieclub.controller.response.UserReadResponse;
+import br.com.inatel.themovieclub.controller.response.UserSearchResponse;
 import br.com.inatel.themovieclub.mapper.UserMapper;
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.service.UserService;

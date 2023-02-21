@@ -1,4 +1,4 @@
-package br.com.inatel.themovieclub.controller.form;
+package br.com.inatel.themovieclub.controller.request;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -8,17 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReviewRequest {
-
-    @NotNull
-    @NotEmpty
-    private String title;
+public class CommentRequest {
 
     @NotNull
     @NotEmpty
     private String content;
-
-    @NotNull
-    private Long movieId;
 
 }

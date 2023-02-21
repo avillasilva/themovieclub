@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.inatel.themovieclub.controller.dto.CommentReadResponse;
-import br.com.inatel.themovieclub.controller.form.CommentRequest;
+import br.com.inatel.themovieclub.controller.request.CommentRequest;
+import br.com.inatel.themovieclub.controller.response.CommentReadResponse;
 import br.com.inatel.themovieclub.mapper.CommentMapper;
 import br.com.inatel.themovieclub.model.Comment;
 import br.com.inatel.themovieclub.service.CommentService;

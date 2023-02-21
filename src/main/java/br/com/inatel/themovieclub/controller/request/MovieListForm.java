@@ -1,4 +1,4 @@
-package br.com.inatel.themovieclub.controller.form;
+package br.com.inatel.themovieclub.controller.request;
 
 import java.util.List;
 

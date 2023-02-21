@@ -1,4 +1,4 @@
-package br.com.inatel.themovieclub.controller.dto;
+package br.com.inatel.themovieclub.controller.response;
 
 import java.time.OffsetDateTime;
 

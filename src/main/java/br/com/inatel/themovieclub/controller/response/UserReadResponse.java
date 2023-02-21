@@ -1,12 +1,13 @@
-package br.com.inatel.themovieclub.controller.dto;
+package br.com.inatel.themovieclub.controller.response;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserSearchResponse {
+public class UserReadResponse {
 
+    private Long id;
     private String username;
     private String email;
 

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import br.com.inatel.themovieclub.controller.dto.UserReadResponse;
-import br.com.inatel.themovieclub.controller.dto.UserSearchResponse;
-import br.com.inatel.themovieclub.controller.form.UserRequest;
+import br.com.inatel.themovieclub.controller.request.UserRequest;
+import br.com.inatel.themovieclub.controller.response.UserReadResponse;
+import br.com.inatel.themovieclub.controller.response.UserSearchResponse;
 import br.com.inatel.themovieclub.model.User;
 
 @Component

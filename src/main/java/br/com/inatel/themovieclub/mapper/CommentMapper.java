@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import br.com.inatel.themovieclub.controller.dto.CommentReadResponse;
-import br.com.inatel.themovieclub.controller.form.CommentRequest;
+import br.com.inatel.themovieclub.controller.request.CommentRequest;
+import br.com.inatel.themovieclub.controller.response.CommentReadResponse;
 import br.com.inatel.themovieclub.model.Comment;
 
 @Component
