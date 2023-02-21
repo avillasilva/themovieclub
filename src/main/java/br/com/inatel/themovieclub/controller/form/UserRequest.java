@@ -8,18 +8,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CommentForm {
+public class UserRequest {
 
     @NotNull
     @NotEmpty
-    private String authorId;
+    private String username;
 
     @NotNull
     @NotEmpty
-    private String content;
+    private String email;
 
     @NotNull
     @NotEmpty
-    private String reviewId;
+    private String password;
 
 }

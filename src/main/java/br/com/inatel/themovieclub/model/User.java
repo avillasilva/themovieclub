@@ -1,9 +1,9 @@
 package br.com.inatel.themovieclub.model;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.OffsetDateTime;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,37 +37,48 @@ public class User implements UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
 
-    private String name;
+    private String username;
 
     @Column(unique = true)
     private String email;
 
     private String password;
-    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private OffsetDateTime createdAt;
+
+    @UpdateTimestamp
+    private OffsetDateTime updatedAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<User> friends;
+    private Set<User> friendshipRequests = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private Set<User> friends = new HashSet<>();
 
     @OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     @OneToMany(mappedBy = "owner", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<MovieList> movieLists = new ArrayList<>();
+    private Set<MovieList> movieLists = new HashSet<>();
 
     @OneToMany(mappedBy = "author", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Comment> comments = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Profile> profiles = new ArrayList<>();
+    private Set<Profile> profiles = new HashSet<>();
 
-    public User(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
+    public void addFriendshipRequests(User user) {
+        if (user.getId() != id) {
+            friendshipRequests.add(user);
+        }
     }
 
     public void addFriend(User user) {
-        friends.add(user);
+        if (user.getId() != id) {
+            friends.add(user);
+        }
     }
 
     public void unfriend(User user) {
@@ -84,7 +97,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override
