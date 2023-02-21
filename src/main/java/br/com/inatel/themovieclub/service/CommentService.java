@@ -19,11 +19,7 @@ public class CommentService {
     @Autowired
     private CommentRepository repository;
 
-<<<<<<< HEAD
     public Page<Comment> list(Pageable pageable, Long reviewId) {
-=======
-    public Page<Comment> search(Pageable pageable, Long reviewId) {
->>>>>>> ff7f2db208f1ed0e7e3e0bcdb0e2286e37711af5
         return repository.findAllByReviewId(pageable, reviewId);
     }
 
