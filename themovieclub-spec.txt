@@ -1,0 +1,178 @@
+--------------------------------------------------------------------------------
+USERS
+
+GET    /users                             /* Get a list of all users in the system */
+
+List<UserSearchResponse>
+[
+ {
+   - username
+   - email
+ },
+ ...
+]
+
+GET    /users/{userId}                    /* Get all user information */
+
+UserReadResponse
+{
+  - id
+  - username
+  - email
+}
+
+POST   /users                             /* Create an user */
+
+UserRequest
+{
+  - username
+  - email
+  - password
+}
+
+UserReadResponse
+{
+  - id
+  - username
+  - email
+}
+
+PUT    /users/{userId}                    /* Update the user */
+
+UserRequest
+{
+  - username
+  - email
+  - password
+}
+
+UserReadResponse
+{
+  - id
+  - username
+  - email
+}
+
+DELETE /users/{userId}                    /* It's necessary to delete all user reviews and comments before deleting it */
+
+--------------------------------------------------------------------------------
+REVIEWS
+
+GET    /users/{userId}/reviews                           /* List all user reviews */
+
+List<ReviewSearchResponse>
+[
+  {
+    - title
+    - movieId
+    - authorUsername
+  },
+  ...
+]
+
+GET    /users/{userId}/reviews/{reviewId}                /* Read a user review */
+
+ReviewReadResponse
+{
+  - title
+  - content
+  - movie {
+    - id
+    - name
+  }
+  - author {
+    - id
+    - username
+  }
+}
+
+POST   /users/{userId}/reviews            /* Create a review */
+
+ReviewRequest
+{
+  - title
+  - content
+  - movieId
+}
+
+ReviewReadResponse
+{
+  - title
+  - content
+  - movieId
+  - author {
+    - id
+    - username
+  }
+}
+
+PUT   /users/{userId}/reviews/{reviewId} /* Update a review */
+
+ReviewUpdateRequest
+{
+  - title
+  - Content
+  - movieId
+}
+
+ReviewReadResponse
+{
+  - title
+  - content
+  - movieId
+  - author {
+    - id
+    - username
+  }
+}
+
+DELETE /users/{userId}/reviews/{reviewId} /* It's necessary to delete all review comments before deleting it. */
+
+--------------------------------------------------------------------------------
+COMMENTS
+
+GET    /users/{userId}/reviews/{reviewId}/comments
+
+CommentReadRequest
+{
+  - author {
+    - id
+    - username
+  }
+  - content
+}
+
+POST   /users/{userId}/reviews/{reviewId}/comments
+
+CommentCreateRequest
+{
+  - content
+}
+
+CommentReadRequest
+{
+  - author {
+    - id
+    - username
+  }
+  - content
+}
+
+PUT    /users/{userId}/reviews/{reviewId}/comments/{commentId}
+
+CommentUpdateRequest
+{
+  - content
+}
+
+CommentReadRequest
+{
+  - author {
+    - id
+    - username
+  }
+  - content
+}
+
+DELETE /users/{userId}/reviews/{reviewId}/comments/{commentId}
+

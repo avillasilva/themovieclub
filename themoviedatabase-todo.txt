@@ -1,0 +1,11 @@
+AuthenticationController | CommentController | MovieDatabaseController | ReviewController | UserController
+-> RestControllerAdvice and Services
+-> Add @ResponseStatus
+
+Create exceptions and mappers
+
+Rename forms to requests and dtos to response
+
+Remove entities constructors
+Change localdatetime to offsetdatetime
+
