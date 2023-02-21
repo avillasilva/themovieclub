@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReviewDto {
+public class ReviewSearchResponse {
 
-    private Long id;
     private String title;
-    private String content;
+    private String movie;
+    private String author;
 
 }

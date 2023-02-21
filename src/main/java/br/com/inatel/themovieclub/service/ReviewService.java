@@ -9,12 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.inatel.themovieclub.exception.EntityNotFoundException;
 import br.com.inatel.themovieclub.model.Review;
+import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.repository.ReviewRepository;
 
 @Service
 public class ReviewService {
 
     private static final String REVIEW_NOT_FOUND_MESSAGE = "Review with id %d not found.";
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -29,7 +33,9 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review save(Review review) {
+    public Review save(Long userId, Review review) {
+        User user = userService.read(userId);
+        review.setAuthor(user);
         return reviewRepository.save(review);
     }
 

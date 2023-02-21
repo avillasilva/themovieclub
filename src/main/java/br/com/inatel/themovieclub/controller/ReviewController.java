@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,63 +21,70 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.inatel.themovieclub.controller.dto.ReviewDto;
-import br.com.inatel.themovieclub.controller.form.ReviewForm;
+import br.com.inatel.themovieclub.controller.dto.ReviewReadResponse;
+import br.com.inatel.themovieclub.controller.dto.ReviewSearchResponse;
+import br.com.inatel.themovieclub.controller.form.ReviewRequest;
 import br.com.inatel.themovieclub.mapper.ReviewMapper;
 import br.com.inatel.themovieclub.model.Review;
 import br.com.inatel.themovieclub.model.User;
 import br.com.inatel.themovieclub.service.ReviewService;
 
 @RestController
-@RequestMapping("/reviews")
+@RequestMapping("/{userId}/reviews")
 public class ReviewController {
 
     @Autowired
-    private ReviewService service;
+    private ReviewService reviewService;
 
     @Autowired
-    private ReviewMapper mapper;
+    private ReviewMapper reviewMapper;
 
     @GetMapping
     @Cacheable(value = "reviewList")
-    public Page<ReviewDto> search(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
-        Page<Review> reviews = service.search(pageable);
-        return mapper.mapToReviewResponse(reviews);
+    public Page<ReviewSearchResponse> search(@PageableDefault(sort = "id", direction = Direction.DESC, size = 10) Pageable pageable) {
+        Page<Review> reviews = reviewService.search(pageable);
+        return reviewMapper.mapToReviewSearchResponse(reviews);
     }
 
     @GetMapping("/{id}")
-    public ReviewDto read(@PathVariable Long id) {
-        Review review = service.read(id);
-        return mapper.mapToReviewResponse(review);
+    public ReviewReadResponse read(@PathVariable Long id) {
+        Review review = reviewService.read(id);
+        return reviewMapper.mapToReviewReadResponse(review);
     }
 
     @PostMapping
     @CacheEvict(value = "reviewList", allEntries = true)
     @ResponseStatus(HttpStatus.CREATED)
-    public ReviewDto create(Authentication authentication, @RequestBody @Valid ReviewForm form, UriComponentsBuilder uriBuilder) {
-        User user = (User) authentication.getPrincipal();
-        Review review = mapper.mapToReview(form);
-        review.setAuthor(user);
-        review = service.save(review);
-        return mapper.mapToReviewResponse(review);
+    public ReviewReadResponse create(@PathVariable Long userId, @RequestBody @Valid ReviewRequest request) {
+        Review review = reviewMapper.mapToReview(request);
+        review = reviewService.save(userId, review);
+        return reviewMapper.mapToReviewReadResponse(review);
     }
 
     @PutMapping("/{id}")
     @CacheEvict(value = "reviewList", allEntries = true)
-    public ReviewDto update(@PathVariable Long id, @RequestBody @Valid ReviewForm form) {
-        Review review = service.read(id);
-        mapper.mapToReview(form, review);
-        review = service.save(review);
-        return mapper.mapToReviewResponse(review);
+    public ResponseEntity<ReviewReadResponse> update(Authentication authentication, @PathVariable Long userId, @PathVariable Long id, @RequestBody @Valid ReviewRequest form) {
+        if (((User) authentication.getPrincipal()).getId() != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Review review = reviewService.read(id);
+        reviewMapper.mapToReview(form, review);
+        review = reviewService.save(userId, review);
+        return ResponseEntity.ok(reviewMapper.mapToReviewReadResponse(review));
     }
 
     @DeleteMapping("/{id}")
     @CacheEvict(value = "reviewList", allEntries = true)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> delete(Authentication authentication, @PathVariable Long userId, @PathVariable Long id) {
+        if (((User) authentication.getPrincipal()).getId() != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        reviewService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
