@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.inatel.themovieclub.config.security.TokenService;
-import br.com.inatel.themovieclub.controller.dto.TokenDto;
-import br.com.inatel.themovieclub.controller.form.LoginForm;
+import br.com.inatel.themovieclub.controller.request.LoginForm;
+import br.com.inatel.themovieclub.controller.response.TokenDto;
 
 @RestController
 @RequestMapping("/auth")

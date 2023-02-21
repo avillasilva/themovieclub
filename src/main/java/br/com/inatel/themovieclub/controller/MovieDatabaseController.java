@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.inatel.themovieclub.service.ApiService;
-import br.com.inatel.themovieclub.service.MovieDetails;
-import br.com.inatel.themovieclub.service.MovieList;
+import br.com.inatel.themovieclub.moviedatabaseapi.ApiService;
+import br.com.inatel.themovieclub.moviedatabaseapi.MovieDetails;
+import br.com.inatel.themovieclub.moviedatabaseapi.MovieList;
 
 @RestController
 @RequestMapping("/movieDatabase")

@@ -23,18 +23,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.inatel.themovieclub.controller.dto.MovieListDto;
-import br.com.inatel.themovieclub.controller.form.MovieForm;
-import br.com.inatel.themovieclub.controller.form.MovieListForm;
-import br.com.inatel.themovieclub.controller.form.MovieListUpdateForm;
+import br.com.inatel.themovieclub.controller.request.MovieForm;
+import br.com.inatel.themovieclub.controller.request.MovieListForm;
+import br.com.inatel.themovieclub.controller.request.MovieListUpdateForm;
+import br.com.inatel.themovieclub.controller.response.MovieListDto;
 import br.com.inatel.themovieclub.model.Movie;
 import br.com.inatel.themovieclub.model.MovieList;
 import br.com.inatel.themovieclub.model.User;
+import br.com.inatel.themovieclub.moviedatabaseapi.ApiService;
+import br.com.inatel.themovieclub.moviedatabaseapi.MovieDetails;
 import br.com.inatel.themovieclub.repository.MovieListRepository;
 import br.com.inatel.themovieclub.repository.MovieRepository;
 import br.com.inatel.themovieclub.repository.UserRepository;
-import br.com.inatel.themovieclub.service.ApiService;
-import br.com.inatel.themovieclub.service.MovieDetails;
 
 @RestController
 @RequestMapping("/movieLists")
